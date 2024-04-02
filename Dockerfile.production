@@ -10,4 +10,4 @@ RUN npx expo export --platform web
 
 EXPOSE 19006
 
-CMD ["npm", "run", "web"]
+CMD ["npm", "start"]

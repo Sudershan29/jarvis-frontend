@@ -1,6 +1,5 @@
 
 import axios from 'axios';
-import { BACKEND_URL } from "react-native-dotenv"
 
 export async function getSkills(token) {
     try {
