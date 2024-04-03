@@ -6,7 +6,7 @@ RUN npm install -g expo-cli
 COPY ./frontend/package.json .
 RUN npm install
 COPY ./frontend .
-RUN npx expo export --platform web
+RUN npm run build
 
 EXPOSE 19006
 

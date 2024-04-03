@@ -5,6 +5,7 @@ import { AuthContext } from "../context/AuthContext"
 import { ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import FlashMessage from "react-native-flash-message";
+import * as Linking from 'expo-linking';
 
 import { AppStack } from './AppStack';
 import { LoginStack } from "./LoginStack"
@@ -23,7 +24,8 @@ const config = {
 };
 
 const linking = {
-    config,
+    prefixes: ['http://localhost:8081', 'jarvis://', 'https://jarvis-b-585ba12661d2.herokuapp.com/'],
+    config: config,
 };
 
 export const AppNavigation = () => {
@@ -31,6 +33,9 @@ export const AppNavigation = () => {
     const [loadingText, setLoadingText] = React.useState('Loading');
 
     useEffect(() => {
+        if(!isLoading)
+            return 
+
         const intervalId = setInterval(() => {
             setLoadingText(prev => prev.length < 10 ? prev + '.' : 'Loading');
         }, 500); // Periodically update loading text
