@@ -1,10 +1,11 @@
 
 import React, { createContext, useState, useEffect } from 'react'
-import { userLogin, userGoogleLogin } from "../api/Login"
+import { userLogin, userGoogleLogin, userSignUp } from "../api/Login"
 
 export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
+    const [flashMessage, setFlashMessageReal] = useState({});
     const [refreshToggle, setRefreshToggle] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [userToken, setUserToken] = useState(null)
@@ -14,15 +15,22 @@ export const AuthProvider = ({ children }) => {
         checkLoginStatus()
     }, []);
 
+    function setFlashMessage(message) {
+        setFlashMessageReal(message)
+        setTimeout(() => {
+            setFlashMessageReal({})
+        }, 5000)
+    }
+
     async function login(email, password) {
-        // setIsLoading(true)
+        setIsLoading(true)
         const response = await userLogin(email, password)
         if (!response.success) {
-            // showMessage({
-            //     message: response.message,
-            //     type: "error",
-            // })
-            // setIsLoading(false);
+            setFlashMessage({
+                message: response.message,
+                type: "error",
+            })
+            setIsLoading(false);
             return;
         }
         setUserToken(response.token)
@@ -38,20 +46,20 @@ export const AuthProvider = ({ children }) => {
     }
 
     async function loginGoogle() {
-        // setIsLoading(true)
+        setIsLoading(true)
         const response = await userGoogleLogin()
         if (!response.success) {
             setIsLoading(false);
-            // showMessage({
-            //     message: response.message,
-            //     type: "error",
-            // });
+            setFlashMessage({
+                message: response.message,
+                type: "error",
+            });
             return;
         }
 
         setUserToken(response.token)
         localStorage.setItem('@LoginStore:userToken', response.token)
-        // setIsLoading(false)
+        setIsLoading(false)
     }
 
     async function renderLoadingScreen(func) {
@@ -88,8 +96,32 @@ export const AuthProvider = ({ children }) => {
         return userToken !== null
     }
 
+    async function signUp(name, email, password) {
+        try {
+            const resp = await userSignUp(name, email, password)
+            if (resp.success){
+                await login(email, password)
+                return
+            }
+            setFlashMessage({
+                message: resp.message,
+                type: "error",
+            })
+        } catch(e) {
+            setFlashMessage({
+                message: "An error occurred. Please try again later.",
+                type: "error",
+            })
+        }
+    }
+
     return (
-        <AuthContext.Provider value={{ userToken, isLoading, connectedToCalendar, refreshToggle, setRefreshToggle, isLoggedIn, login, logout, loginGoogle, loginGoogleSuccess, calendarConnectSuccess, renderLoadingScreen }}>
+        <AuthContext.Provider value={{
+            userToken, isLoading, connectedToCalendar,
+            refreshToggle, flashMessage, setFlashMessage, setRefreshToggle,
+            isLoggedIn, login, logout, loginGoogle, signUp,
+            loginGoogleSuccess, calendarConnectSuccess, renderLoadingScreen
+        }}>
             {children}
         </AuthContext.Provider>
     )

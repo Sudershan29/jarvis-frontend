@@ -1,12 +1,9 @@
-
 import React, { useContext, useState } from "react";
 import { TextField, Button, Box, Typography, Grid } from "@mui/material";
 import { makeStyles } from '@mui/styles';
 import { useNavigate } from "react-router-dom";
-import GoogleButton from 'react-google-button'
 
 import { AuthContext } from "../../context/AuthContext"
-import { GoogleLoginURL, GoogleCallbackURL }  from "../../api/Login"
 
 const useStyles = makeStyles({
     container: {
@@ -32,21 +29,38 @@ const useStyles = makeStyles({
     }
 });
 
-export default function LoginScreen() {
+export default function SignUpScreen() {
     const navigate = useNavigate()
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
 
-    const { login } = useContext(AuthContext)
-
-    function NavigateToLogin(){
-        window.location.href = GoogleLoginURL();
-    }
+    const { signUp, setFlashMessage } = useContext(AuthContext)
 
     const classes = useStyles();
 
+    const handleSignUp = () => {
+        if(password !== confirmPassword) {
+            setFlashMessage({
+                message: "Passwords do not match",
+                type: "error"
+            })
+            return;
+        }
+        signUp(name, email, password);
+    }
+
     return (
         <Box className={classes.container}>
+            <Box className={classes.inputView}>
+                <TextField
+                    className={classes.TextInput}
+                    placeholder="Name."
+                    variant="outlined"
+                    onChange={(e) => setName(e.target.value)}
+                />
+            </Box>
             <Box className={classes.inputView}>
                 <TextField
                     className={classes.TextInput}
@@ -64,35 +78,32 @@ export default function LoginScreen() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </Box>
+            <Box className={classes.inputView}>
+                <TextField
+                    className={classes.TextInput}
+                    placeholder="Confirm Password."
+                    variant="outlined"
+                    type="password"
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+            </Box>
 
             <Grid container direction="row" justifyContent="center">
                 <Button
                     variant="contained"
-                    onClick={() => login(email, password)}
+                    onClick={handleSignUp}
                 >
-                    Login
+                    Sign Up
                 </Button>
             </Grid>
 
-            <GoogleButton variant="contained" onClick={NavigateToLogin} />
-
             <Typography
                 variant="body2"
-                onClick={() => navigate('/sign-up')}
+                onClick={() => navigate('/login')}
                 style={{ cursor: 'pointer', marginTop: '10px' }}
             >
-                Don't have an account? Register
+                Already have an account? Login
             </Typography>
-
-            <Typography
-                variant="body2"
-                onClick={() => navigate('/login-reset')}
-                style={{ cursor: 'pointer', marginTop: '10px' }}
-            >
-                Forgot password?
-            </Typography>
-
-
         </Box>
     )
 }
