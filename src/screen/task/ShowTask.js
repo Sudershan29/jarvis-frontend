@@ -1,48 +1,62 @@
 import React, { useState, useContext, useEffect } from "react";
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { Box, Typography, Button } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { AuthContext } from "../../context/AuthContext";
-import TimePreference from "../../component/TimePreference";
-import { getProposals, cancelProposal, markAsCompleted } from "../../api/Task";
-import ProposalGroup from "../../component/ProposalGroup";
+import TimePreference from "../../components/TimePreference";
+import { getProposals, cancelProposal, markAsCompleted, getTask } from "../../api/Task";
+import ProposalGroup from "../../components/ProposalGroup";
+import { useParams } from 'react-router-dom';
 
-export default function TaskShowScreen({ route, navigation }) {
-    const { userToken } = useContext(AuthContext);
-    const { id, name, deadline, duration, scheduled, timePreferences } = route.params;
-    const deadlineDate = new Date(deadline);
-    const [proposals, setProposals] = useState([]);
-
-    useEffect(() => {
-        getProposals(userToken, id).then(res => {
-            if (res.success) {
-                setProposals(res.proposals);
-            } else {
-                setFlashMessage({
-                    message: res.message,
-                    type: "error",
-                });
-            }
-        })
-    }, [])
-
-
-    return (
-        <View style={styles.container}>
-            <Text>Name: Sample {name}</Text>
-            <Text>Deadline: {deadlineDate.toLocaleString()} </Text>
-            <Text>Total Duration: {duration} hours </Text>
-            <TimePreference disableClick={true} timePreferences={timePreferences} setTimePreferences={() => { }} />
-            <ProposalGroup proposals={proposals} cancel={(proposalId) => {cancelProposal(id, proposalId)}} />
-            <Button title="Mark as Done" onPress={() => { markAsCompleted (userToken, id)}}/>
-        </View>
-    )
-}
-
-const styles = StyleSheet.create({
+const useStyles = makeStyles({
     container: {
-        flex: 1,
-        backgroundColor: '#fff',
+        display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
+        backgroundColor: '#fff',
     },
 });
+
+export default function TaskShowScreen({ match }) {
+    const classes = useStyles();
+    const { userToken, setFlashMessage } = useContext(AuthContext);
+    const { id } = useParams();
+    const [task, setTask] = useState({});
+    const [proposals, setProposals] = useState([]);
+
+    useEffect(() => {
+        Promise.all([getTask(userToken, id), getProposals(userToken, id)])
+            .then(([taskRes, proposalRes]) => {
+                if (taskRes.success) {
+                    setTask(taskRes.task);
+                } else {
+                    setFlashMessage({
+                        message: taskRes.message,
+                        type: "error",
+                    });
+                }
+                if (proposalRes.success) {
+                    setProposals(proposalRes.proposals);
+                } else {
+                    setFlashMessage({
+                        message: proposalRes.message,
+                        type: "error",
+                    });
+                }
+            });
+    }, [id, userToken, setFlashMessage]);
+
+    const deadlineDate = new Date(task.deadline);
+
+    return (
+        <Box className={classes.container}>
+            <Typography variant="h6">Name: Sample {task.name}</Typography>
+            <Typography variant="body1">Deadline: {deadlineDate.toLocaleString()} </Typography>
+            <Typography variant="body1">Total Duration: {task.duration} hours </Typography>
+            <TimePreference disableClick={true} timePreferences={task.timePreferences ? task.timePreferences : [] } setTimePreferences={() => { }} />
+            <ProposalGroup proposals={proposals} cancel={(proposalId) => {cancelProposal(id, proposalId)}} />
+            <Button variant="contained" onClick={() => { markAsCompleted (userToken, id)}}>Mark as Done</Button>
+        </Box>
+    )
+}

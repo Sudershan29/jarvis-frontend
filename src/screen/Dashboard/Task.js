@@ -6,7 +6,6 @@ import { getTasks, taskAnalysis } from "../../api/Task";
 import Task from "../../components/Task"
 import { AuthContext } from "../../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
-import InfoComponent from "../../components/Information";
 
 const useStyles = makeStyles({
     container: {
@@ -16,7 +15,7 @@ const useStyles = makeStyles({
     },
     buttonContainer: {
         position: 'absolute',
-        bottom: 20,
+        bottom: 10,
         right: 20,
         width: 50,
         height: 50,
@@ -85,7 +84,7 @@ export default function TaskScreen() {
 
         setIsButtonClicked(!isButtonClicked);
 
-        navigate('TaskCreate');
+        navigate('/task-create');
     };
 
     return (
@@ -119,11 +118,11 @@ export default function TaskScreen() {
                         <Typography align="center" variant="caption" color="grey" fontWeight="bold"> Note: Use `+` to create your own tasks </Typography>
                 </Box>
             }
-            <Button className={classes.buttonContainer} onClick={handleButtonClick}>
+            {/* <Button className={classes.buttonContainer} onClick={handleButtonClick}>
                 <Box className={classes.button}>
                     <Typography className={classes.buttonText}>{isButtonClicked ? 'x' : '+'}</Typography>
                 </Box>
-            </Button>
+            </Button> */}
         </Box>
     );
 }

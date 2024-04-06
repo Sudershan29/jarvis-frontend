@@ -83,7 +83,7 @@ export default function SkillScreen() {
         }, 1000);
 
         setIsButtonClicked(!isButtonClicked);
-        navigate('SkillCreate');
+        navigate('/skills-create');
     };
 
     return (

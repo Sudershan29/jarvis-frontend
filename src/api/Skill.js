@@ -13,6 +13,18 @@ export async function getSkills(token) {
     }
 }
 
+export async function getSkill(token, skillId) {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/skills/${skillId}`, { headers: { ' Authorization': `Bearer ${token}`, "ngrok-skip-browser-warning": "69420" } });
+        if (response.status === 200) {
+            return { success: true, skill: response.data.skill }
+        }
+        return { success: false} 
+    } catch (error) {
+        return { success: false, message: error.message }
+    }
+}
+
 export async function createSkill(token, skill) {
     try {
         const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/skills`, skill, { headers: { 'Authorization': `Bearer ${token}`, "ngrok-skip-browser-warning": "69420" } });

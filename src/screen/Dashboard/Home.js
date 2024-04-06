@@ -65,7 +65,7 @@ export default function HomeScreen () {
             </Box>
 
             <Box flex={1.75} padding={1}>
-                <Typography className={classes.boldText}>Quick Actions</Typography>
+                <Typography><Box className={classes.boldText}> Quick Actions </Box></Typography>
                 <Box display="flex" flexDirection="row" overflow="auto">
                     <Icon name={"Replan next 3days"} key={1} execute={async () => { await renderLoadingScreen(() => planMyWeek(userToken)) }} image={"refresh"} />
                     <Icon name={"Sync with Calendar"} key={2} execute={async () => { await renderLoadingScreen(() => calibrateCalendar(userToken)) }} image={"git-pull-request"} />
@@ -74,7 +74,7 @@ export default function HomeScreen () {
                 </Box>
             </Box>
 
-            <Box flex={6}>
+            <Box flex={6} padding={1}>
                 <Event heading={"Upcoming Events"} 
                     events={upcomingEvents}
                 />

@@ -39,6 +39,8 @@ export default function TimePreference({ timePreferences, setTimePreferences, di
     const handleDayClick = (day) => {
         if (disableClick) return;
 
+        if (!timePreferences) return;
+
         if (timePreferences.includes(day.fullName)) {
             setTimePreferences(timePreferences.filter(d => d !== day.fullName));
         } else {

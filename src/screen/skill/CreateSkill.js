@@ -1,19 +1,35 @@
 import React, { useState, useContext } from "react";
-import { Button, View, Text, TextInput, StyleSheet } from 'react-native';
-import TimePreference from "../../component/TimePreference";
-import { useNavigation } from '@react-navigation/native';
+import { Button, TextField, Box } from '@mui/material';
+import {makeStyles  } from '@mui/styles';
+import TimePreference from "../../components/TimePreference";
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from "../../context/AuthContext";
 import { createSkill } from "../../api/Skill";
 
+const useStyles = makeStyles({
+    container: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+    },
+    input: {
+        margin: 10,
+        width: '80%',
+    },
+});
+
 export default function SkillCreateScreen() {
-    const { userToken, setRefreshToggle, refreshToggle } = useContext(AuthContext);
+    const classes = useStyles();
+    const navigate = useNavigate();
+    const { userToken, setRefreshToggle, refreshToggle, setFlashMessage } = useContext(AuthContext);
     const [name, setName] = useState('');
     const [level, setLevel] = useState('');
     const [duration, setDuration] = useState(0);
     const [showDetails, setShowDetails] = useState(false);
     const [categories, setCategories] = useState('');
     const [timePreferences, setTimePreferences] = useState([]);
-    const navigation = useNavigation();
 
     const handleSubmit = () => {
         const skillData = {
@@ -31,7 +47,7 @@ export default function SkillCreateScreen() {
                         type: "success",
                     });
                     setRefreshToggle(!refreshToggle);
-                    navigation.navigate('Skills');
+                    navigate('/skills');
                 } else {
                     setFlashMessage({
                         message: res.message,
@@ -48,20 +64,20 @@ export default function SkillCreateScreen() {
     };
 
     return (
-        <View style={styles.container}>
-            <TextInput
-                style={styles.input}
-                placeholder="Name"
+        <Box className={classes.container}>
+            <TextField
+                className={classes.input}
+                label="Name"
                 value={name}
-                onChangeText={text => setName(text)}
+                onChange={e => setName(e.target.value)}
             />
-            <TextInput
-                style={styles.input}
-                placeholder="Duration"
+            <TextField
+                className={classes.input}
+                label="Duration"
                 value={duration.toString()}
-                keyboardType="numeric"
-                onChangeText={text => {
-                    const parsedValue = parseInt(text);
+                type="number"
+                onChange={e => {
+                    const parsedValue = parseInt(e.target.value);
                     if (!isNaN(parsedValue)) {
                         setDuration(parsedValue);
                     } else {
@@ -69,43 +85,27 @@ export default function SkillCreateScreen() {
                     }
                 }}
             />
-            <Button title={showDetails ? "Hide Optional Preferences" : "Add Optional Preferences"} onPress={() => setShowDetails(!showDetails)} />
+            <Button variant="contained" onClick={() => setShowDetails(!showDetails)}>
+                {showDetails ? "Hide Optional Preferences" : "Add Optional Preferences"}
+            </Button>
             {showDetails && (
-                <View>
+                <Box>
                     <TimePreference timePreferences={timePreferences} setTimePreferences={setTimePreferences} />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Categories"
+                    <TextField
+                        className={classes.input}
+                        label="Categories"
                         value={categories}
-                        onChangeText={text => setCategories(text)}/>
-
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Level"
-                        value={level}
-                        onChangeText={text => setLevel(text)}
+                        onChange={e => setCategories(e.target.value)}
                     />
-                </View>
+                    <TextField
+                        className={classes.input}
+                        label="Level"
+                        value={level}
+                        onChange={e => setLevel(e.target.value)}
+                    />
+                </Box>
             )}
-            <Button title="Submit" onPress={handleSubmit} />
-        </View>
+            <Button variant="contained" color="primary" onClick={handleSubmit}>Submit</Button>
+        </Box>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 20,
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        margin: 10,
-        padding: 10,
-        width: '80%',
-    },
-});

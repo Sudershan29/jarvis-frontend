@@ -58,14 +58,7 @@ export default function Skill({ sample, id, name, duration, scheduled, deadline,
             return;
         }
 
-        navigate('SkillShow', {
-            state: {
-                id: id,
-                name: name,
-                duration: duration,
-                timePreferences: timepreference,
-            }
-        });
+        navigate('/skills/' + id);
     }
 
     return (

@@ -1,50 +1,66 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Button, View, Text, StyleSheet } from 'react-native';
-import TimePreference from "../../component/TimePreference";
+import { Button, Typography, Box } from '@mui/material';
+import { makeStyles } from "@mui/styles";
+import TimePreference from "../../components/TimePreference";
 import { AuthContext } from "../../context/AuthContext";
-import { getProposals, cancelProposal } from "../../api/Skill";
-import ProposalGroup from "../../component/ProposalGroup";
+import { getProposals, cancelProposal, getSkill } from "../../api/Skill";
+import ProposalGroup from "../../components/ProposalGroup";
+import { useParams } from 'react-router-dom';
 
-export default function SkillShowScreen({ route, navigation }) {
-    const { userToken } = useContext(AuthContext);
+const useStyles = makeStyles({
+    container: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+    },
+});
 
-    const { id, name, duration, timePreferences } = route.params;
+export default function SkillShowScreen() {
+    const { userToken, setFlashMessage } = useContext(AuthContext);
+    const { id } = useParams();
+    const classes = useStyles();
+
     const [proposals, setProposals] = useState([]);
+    const [skill, setSkill] = useState({});
 
     useEffect(() => {
-        getProposals(userToken, id).then(res => {
-            if (res.success) {
-                let pUnordered = res.proposals;
+        Promise.all([
+            getProposals(userToken, id),
+            getSkill(userToken, id)
+        ]).then(([proposalsRes, skillRes]) => {
+            if (proposalsRes.success) {
+                let pUnordered = proposalsRes.proposals;
                 pUnordered.sort((a, b) => {
                     return new Date(a.scheduledFor) - new Date(b.scheduledFor);
                 });
                 setProposals(pUnordered);
             } else {
                 setFlashMessage({
-                    message: res.message,
+                    message: proposalsRes.message,
                     type: "error",
                 });
             }
-        })
-    }, [])
+
+            if (skillRes.success) {
+                setSkill(skillRes.skill);
+            } else {
+                setFlashMessage({
+                    message: skillRes.message,
+                    type: "error",
+                });
+            }
+        });
+    }, [userToken, id])
 
     return (
-        <View style={styles.container}>
-            <Text>Name: Sample { name }</Text>
-            <Text>Duration: { duration } </Text>
-            <TimePreference disableClick={true} timePreferences={timePreferences} setTimePreferences={()=> {}} />
+        <Box className={classes.container}>
+            <Typography variant="h6">Name: {skill.name}</Typography>
+            <Typography variant="body1">Duration: {skill.duration}</Typography>
+            <TimePreference disableClick={true} timePreferences={skill.timePreferences ? skill.timePreferences : []} setTimePreferences={()=> {}} />
             <ProposalGroup proposals={proposals} cancel={(proposalId) => {cancelProposal(userToken, id, proposalId)}} />
-            <Button title="Completed" onPress={() => { }} />
-        </View>
+            <Button variant="contained" color="primary" onClick={() => { }}>Completed</Button>
+        </Box>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 20,
-    },
-});

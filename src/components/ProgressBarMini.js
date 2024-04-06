@@ -9,7 +9,6 @@ const useStyles = makeStyles({
         overflow: 'hidden',
     },
     progressContainer: {
-        height: 10,
         borderRadius: 5,
         overflow: 'hidden',
         width: '100%',
@@ -18,17 +17,20 @@ const useStyles = makeStyles({
     subTitle: {
         fontSize: 14,
         marginBottom: 3,
+        fontStyle: 'italic', // Make the subTitle italics
     },
     subProgress: {
-        height: 10,
-        borderRadius: 5,
+        height: 15,
+        borderRadius: 7,
+        justifyContent: 'center',
         overflow: 'hidden',
     },
     subProgressText: {
         color: 'black',
         textAlign: 'right',
         paddingRight: 2,
-        fontSize: 10,
+        fontSize: 12,
+        fontWeight: 'bold',
     },
 });
 

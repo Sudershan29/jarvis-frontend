@@ -1,13 +1,11 @@
 import React, { useContext, useEffect } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
-import {Grid, Typography} from '@mui/material';
+import {Grid, Typography, CircularProgress} from '@mui/material';
 import { AuthContext } from "../context/AuthContext";
 import AppStack from "./AppStack";
 import LoginStack from "./LoginStack";
 
 export default function AppNav() {
-    const { userToken } = useContext(AuthContext)
-
     const { isLoggedIn, isLoading } = useContext(AuthContext)
     const [loadingText, setLoadingText] = React.useState('Loading');
 
@@ -16,17 +14,17 @@ export default function AppNav() {
             return
 
         const intervalId = setInterval(() => {
-            setLoadingText(prev => prev.length < 10 ? prev + '.' : 'Loading');
+            setLoadingText(prev => prev.length < 16 ? prev + '.' : 'Loading');
         }, 500);
 
         return () => clearInterval(intervalId);
-    }, []);
+    }, [isLoading]);
 
     if (isLoading)
         return (
-            <Grid style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                {/* <ActivityIndicator size="large" /> */}
-                <Typography>{loadingText}</Typography>
+            <Grid container style={{ height: '100vh' }} direction="column" justifyContent="center" alignItems="center">
+                <CircularProgress />
+                <Typography variant="h6" align="center">{loadingText}</Typography>
             </Grid>
         )
 

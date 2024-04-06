@@ -13,6 +13,20 @@ export async function getTasks(token) {
     }
 }
 
+export async function getTask(token, taskId) {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/tasks/${taskId}`, { headers: { 'Authorization': `Bearer ${token}`, "ngrok-skip-browser-warning": "69420" } });
+        if (response.status === 200) {
+            return { success: true, task: response.data.task }
+        }
+        return { success: false, message: response.data.message }
+    } catch (error) {
+        return { success: false, message: error.message }
+    }
+}
+
+
+
 export async function createTask(token, skill) {
     try {
         const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/tasks`, skill, { headers: { 'Authorization': `Bearer ${token}`, "ngrok-skip-browser-warning": "69420" } });

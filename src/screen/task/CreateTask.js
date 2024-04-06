@@ -1,13 +1,12 @@
 import React, { useState, useContext } from "react";
-import { Button, View, Text, TextInput, StyleSheet } from 'react-native';
-import TimePreference from "../../component/TimePreference";
-import { useNavigation } from '@react-navigation/native';
+import { Button, Box, TextField, Typography } from '@mui/material';
+import TimePreference from "../../components/TimePreference";
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from "../../context/AuthContext";
-// import DateTimePicker from '@react-native-community/datetimepicker';
 import { createTask } from "../../api/Task";
 
 export default function TaskCreateScreen() {
-    const { userToken, setRefreshToggle, refreshToggle } = useContext(AuthContext);
+    const { userToken, setRefreshToggle, refreshToggle, setFlashMessage } = useContext(AuthContext);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [deadline, setDeadline] = useState('');
@@ -15,7 +14,7 @@ export default function TaskCreateScreen() {
     const [showDetails, setShowDetails] = useState(false);
     const [categories, setCategories] = useState('');
     const [timePreferences, setTimePreferences] = useState([]);
-    const navigation = useNavigation();
+    const navigate = useNavigate();
 
     const handleSubmit = () => {
         const taskData = {
@@ -35,7 +34,7 @@ export default function TaskCreateScreen() {
                         type: "success",
                     });
                     setRefreshToggle(!refreshToggle);
-                    navigation.navigate('Tasks');
+                    navigate('/tasks');
                 } else {
                     setFlashMessage({
                         message: res.message,
@@ -57,74 +56,67 @@ export default function TaskCreateScreen() {
     };
 
     return (
-        <View style={styles.container}>
-            <TextInput
-                style={styles.input}
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 2 }}>
+            <TextField
+                variant="outlined"
                 placeholder="Name"
                 value={name}
-                onChangeText={text => setName(text)}
+                onChange={event => setName(event.target.value)}
+                fullWidth
+                margin="normal"
             />
 
-            <TextInput
-                style={styles.input}
+            <TextField
+                variant="outlined"
                 placeholder="Description"
                 value={description}
-                onChangeText={text => setDescription(text)}
+                onChange={event => setDescription(event.target.value)}
+                fullWidth
+                margin="normal"
             />
             
-            <TextInput
-                style={styles.input}
+            <TextField
+                variant="outlined"
                 placeholder="Duration"
                 value={duration.toString()}
-                keyboardType="numeric"
-                onChangeText={text => {
-                    const parsedValue = parseInt(text);
+                type="number"
+                onChange={event => {
+                    const parsedValue = parseInt(event.target.value);
                     if (!isNaN(parsedValue)) {
                         setDuration(parsedValue);
                     } else {
                         setDuration(0);
                     }
                 }}
+                fullWidth
+                margin="normal"
             />
 
-            <Button title={showDetails ? "Hide Optional Preferences" : "Add Optional Preferences"} onPress={() => setShowDetails(!showDetails)} />
+            <Button variant="contained" onClick={() => setShowDetails(!showDetails)}>{showDetails ? "Hide Optional Preferences" : "Add Optional Preferences"}</Button>
             {showDetails && (
-                <View>
-                    <TextInput
-                        style={styles.input}
+                <Box>
+                    <TextField
+                        variant="outlined"
                         placeholder="Deadline (Eg: 2006-01-02 15:04:05)"
                         value={deadline}
-                        onChangeText={text => setDeadline(text)} />
+                        onChange={event => setDeadline(event.target.value)}
+                        fullWidth
+                        margin="normal"
+                    />
 
                     <TimePreference timePreferences={timePreferences} setTimePreferences={setTimePreferences} />
-                    <TextInput
-                        style={styles.input}
+                    <TextField
+                        variant="outlined"
                         placeholder="Categories"
                         value={categories}
-                        onChangeText={text => setCategories(text)} />
+                        onChange={event => setCategories(event.target.value)}
+                        fullWidth
+                        margin="normal"
+                    />
 
-                </View>
+                </Box>
             )}
-            <Button title="Submit" onPress={handleSubmit} />
-        </View>
+            <Button variant="contained" onClick={handleSubmit}>Submit</Button>
+        </Box>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 20,
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        margin: 10,
-        padding: 10,
-        width: '80%',
-    },
-});
-

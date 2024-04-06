@@ -61,16 +61,7 @@ export default function Task({ sample, id, name, deadline, scheduled, timeprefer
             return;
         }
 
-        navigate('TaskShow', {
-            state: {
-                id: id,
-                name: name,
-                deadline: deadline, 
-                duration: duration,
-                scheduled: scheduled,
-                timePreferences: timepreference,
-            }
-        });
+        navigate('/tasks/' + id);
     }
 
     return (

@@ -1,17 +1,30 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { makeStyles } from "@mui/styles";
-import LinearProgress from '@mui/material/LinearProgress';
+import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
+import { styled } from '@mui/system';
 import ProgressBarMini from './ProgressBarMini';
+
+const ColorLinearProgress = styled(LinearProgress)(({ theme }) => ({
+  height: 20,
+  borderRadius: 10,
+  [`&.${linearProgressClasses.colorPrimary}`]: {
+    backgroundColor: '#ddd',
+  },
+  [`& .${linearProgressClasses.bar}`]: {
+    borderRadius: 10,
+    backgroundColor: '#2196f3',
+  },
+}));
 
 const useStyles = makeStyles({
     container: {
         padding: 10,
-        backgroundColor: '#f3f3f3',
+        backgroundColor: '#fff',
         borderRadius: 10,
         overflow: 'hidden',
         width: '95%',
-        boxShadow: '0 4px #ffffff',
+        // boxShadow: '0px 2px 2px 0.5px rgba(0,0,0,0.3)',
     },
     title: {
         fontSize: 18,
@@ -20,20 +33,17 @@ const useStyles = makeStyles({
     },
     progressBar: {
         height: 20,
-        backgroundColor: '#ddd',
         borderRadius: 10,
         overflow: 'hidden',
-    },
-    progress: {
-        height: '100%',
-        backgroundColor: '#2196f3',
-        justifyContent: 'center',
-        borderRadius: 10,
+        position: 'relative', // Added position relative to allow absolute positioning of progressText
     },
     progressText: {
-        color: '#000',
         textAlign: 'right',
         paddingRight: 5,
+        position: 'absolute', // Made progressText absolute
+        right: 0, // Positioned it to the right
+        top: 0, // Positioned it to the top
+        zIndex: 1, // Made it appear above the progress bar
     }
 });
 
@@ -42,10 +52,10 @@ export default function ProgressBar({ title, progress, subProgresses = [] }) {
     const progressCapped = Math.min(progress, 100);
     return (
         <Box className={classes.container}>
-            <Typography className={classes.title}>{title}</Typography>
+            <Typography><Box className={classes.title} >{title}</Box> </Typography>
             <Box className={classes.progressBar}>
-                <LinearProgress variant="determinate" value={Math.min(progressCapped + 10, 100)} />
-                <Typography className={classes.progressText}>{`${progressCapped}%`}</Typography>
+                <ColorLinearProgress variant="determinate" value={Math.min(progressCapped + 10, 100)} />
+                <Typography className={classes.progressText}><Box sx={{fontWeight: 'bold'}}> {`${progressCapped}%`} </Box></Typography>
             </Box>
             {subProgresses.map((sub, index) => (
                 <ProgressBarMini key={index} name={sub.name} value={Math.ceil(sub.completionRatio)} index={index} />
