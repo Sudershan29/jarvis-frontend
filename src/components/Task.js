@@ -13,10 +13,12 @@ const useStyles = makeStyles({
     done: {
         backgroundColor: '#D5F5E3', // Pale green
         borderRadius: 10,
+        padding: 15,
     },
     default: {
         backgroundColor: '#D6EAF8', // Pale blue
         borderRadius: 10,
+        padding: 15,
     },
     sampleStyle: {
         backgroundColor: '#F9EBEA', // Pale pink

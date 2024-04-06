@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     },
     buttonContainer: {
         position: 'absolute',
-        bottom: 10,
+        bottom: 75,
         right: 20,
         width: 50,
         height: 50,
@@ -95,21 +95,23 @@ export default function TaskScreen() {
                     <Typography variant="h6" fontWeight="bold" marginBottom={1} textAlign="right"> Total: </Typography><Typography variant="h6" marginBottom={1} textAlign="right"> {taskAnalysisData?.total} hrs </Typography>
                 </Box>
             }
-            {TasksData.length !== 0 && 
-                TasksData.map((task, index) => (
-                    <Task 
-                        id={task.id}
-                        name={task.name} 
-                        deadline={task.deadline} 
-                        key={index}
-                        description={task.description}
-                        duration={task.duration}
-                        categories={task.categories}
-                        timepreference={task.timepreference}
-                        hasDeadline={task.hasDeadline}
-                        isDone={task.isDone} />
-                ))
-            }
+            <Box padding={2}>
+                {TasksData.length !== 0 &&
+                    TasksData.map((task, index) => (
+                        <Task
+                            id={task.id}
+                            name={task.name}
+                            deadline={task.deadline}
+                            key={index}
+                            description={task.description}
+                            duration={task.duration}
+                            categories={task.categories}
+                            timepreference={task.timepreference}
+                            hasDeadline={task.hasDeadline}
+                            isDone={task.isDone} />
+                    ))
+                }
+            </Box>
             {
                 TasksData.length === 0 &&
                 <Box>
@@ -118,11 +120,11 @@ export default function TaskScreen() {
                         <Typography align="center" variant="caption" color="grey" fontWeight="bold"> Note: Use `+` to create your own tasks </Typography>
                 </Box>
             }
-            {/* <Button className={classes.buttonContainer} onClick={handleButtonClick}>
+            <Button className={classes.buttonContainer} onClick={handleButtonClick}>
                 <Box className={classes.button}>
                     <Typography className={classes.buttonText}>{isButtonClicked ? 'x' : '+'}</Typography>
                 </Box>
-            </Button> */}
+            </Button>
         </Box>
     );
 }

@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     },
     buttonContainer: {
         position: 'absolute',
-        bottom: 20,
+        bottom: 75,
         right: 20,
         width: 50,
         height: 50,
