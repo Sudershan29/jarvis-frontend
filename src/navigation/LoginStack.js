@@ -3,10 +3,10 @@ import React, { useContext, useEffect } from 'react'
 
 import { Route, Routes } from 'react-router-dom'
 
-import Login from '../screen/Authentication/Login'
-import SignUp from '../screen/Authentication/SignUp'
-import LoginResetScreen from '../screen/Authentication/LoginReset'
-import GoogleLoginSuccess from '../screen/Authentication/GoogleLoginSuccess'
+import Login from '../screen/authentication/Login'
+import SignUp from '../screen/authentication/SignUp'
+import LoginResetScreen from '../screen/authentication/LoginReset'
+import GoogleLoginSuccess from '../screen/authentication/GoogleLoginSuccess'
 
 export default function AppStackNavigation() {
     return (

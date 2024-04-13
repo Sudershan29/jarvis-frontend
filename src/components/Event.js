@@ -54,8 +54,8 @@ const Event = ({ events, heading, isDate }) => {
 
     return (
         <Box>
-            {!isDate && <Typography> <Box className={classes.heading}>{heading}</Box></Typography>}
-            {isDate && <Typography> <Box className={classes.heading}>{heading?.day}, {heading?.date + " " + heading?.month}</Box></Typography>}
+            {!isDate && <Typography variant="body1" fontWeight="bold"> {heading}</Typography>}
+            {isDate && <Typography variant="body1" fontWeight="bold"> {heading?.day}, {heading?.date + " " + heading?.month}</Typography>}
             {events.length === 0 ?
                 <Box className={classes.center}>
                     <Typography>No upcoming events for today</Typography> 

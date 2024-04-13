@@ -52,7 +52,7 @@ export default function ProgressBar({ title, progress, subProgresses = [] }) {
     const progressCapped = Math.min(progress, 100);
     return (
         <Box className={classes.container}>
-            <Typography><Box className={classes.title} >{title}</Box> </Typography>
+            <Typography fontWeight="bold">{title}</Typography>
             <Box className={classes.progressBar}>
                 <ColorLinearProgress variant="determinate" value={Math.min(progressCapped + 10, 100)} />
                 <Typography className={classes.progressText}><Box sx={{fontWeight: 'bold'}}> {`${progressCapped}%`} </Box></Typography>

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, Stack, Grid } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { AuthContext } from "../../context/AuthContext";
 import TimePreference from "../../components/TimePreference";
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function TaskShowScreen({ match }) {
+export default function TaskShowScreen() {
     const classes = useStyles();
     const { userToken, setFlashMessage } = useContext(AuthContext);
     const { id } = useParams();
@@ -50,13 +50,37 @@ export default function TaskShowScreen({ match }) {
     const deadlineDate = new Date(task.deadline);
 
     return (
-        <Box className={classes.container}>
-            <Typography variant="h6">Name: Sample {task.name}</Typography>
-            <Typography variant="body1">Deadline: {deadlineDate.toLocaleString()} </Typography>
-            <Typography variant="body1">Total Duration: {task.duration} hours </Typography>
-            <TimePreference disableClick={true} timePreferences={task.timePreferences ? task.timePreferences : [] } setTimePreferences={() => { }} />
-            <ProposalGroup proposals={proposals} cancel={(proposalId) => {cancelProposal(id, proposalId)}} />
+        <Stack margin={2} spacing={2}>
+            <Typography variant="h4" sx={{ textAlign: 'center' }}>{task.name}</Typography>
+            <Stack spacing={1}>
+                <Stack direction="row" spacing={2}>
+                    <Typography variant="body1" fontWeight="bold">Deadline: </Typography>
+                    <Typography variant="body1">{deadlineDate.toLocaleString()} </Typography>
+                </Stack>
+                <Stack direction="row" spacing={2}>
+                    <Typography variant="body1" fontWeight="bold">Total Duration: </Typography>
+                    <Typography variant="body1">{Math.floor(task.duration / 60)}h {task.duration % 60}m</Typography>
+                </Stack>
+            </Stack>
+            <Stack alignItems="center" spacing={0.1}>
+                <Typography variant="body1" fontWeight="bold">I prefer working on</Typography>
+
+                <TimePreference 
+                    disableClick={true} 
+                    timePreferences={task.timePreferences ? task.timePreferences : []} 
+                    setTimePreferences={() => { }} 
+                />
+            </Stack>
+
+            <Stack alignItems="center" spacing={0.1}>
+                <ProposalGroup
+                    disableClick={true}
+                    proposals={proposals} 
+                    cancel={(proposalId) => { cancelProposal(userToken, id, proposalId) }} 
+                />
+            </Stack>
+
             <Button variant="contained" onClick={() => { markAsCompleted (userToken, id)}}>Mark as Done</Button>
-        </Box>
+        </Stack>
     )
 }

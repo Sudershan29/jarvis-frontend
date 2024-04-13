@@ -1,20 +1,19 @@
 
 import React, { useState, useContext } from "react";
-import { Box, Button, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { Box, Button, Typography, Stack } from "@mui/material";
 import { getTasks, taskAnalysis } from "../../api/Task";
 import Task from "../../components/Task"
 import { AuthContext } from "../../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
 
-const useStyles = makeStyles({
+const useStyles = {
     container: {
         flexGrow: 1,
-        padding: 20,
-        backgroundColor: 'white',
+        margin: 2,
+        marginBottom: 8,
     },
     buttonContainer: {
-        position: 'absolute',
+        position: 'fixed',
         bottom: 75,
         right: 20,
         width: 50,
@@ -38,10 +37,10 @@ const useStyles = makeStyles({
         fontSize: 30,
         fontWeight: 'bold',
     }
-});
+};
 
 export default function TaskScreen() {
-    const classes = useStyles();
+    const classes = useStyles;
     const { userToken, refreshToggle, setFlashMessage } = useContext(AuthContext)
     const [taskAnalysisData, setTaskAnalysisData] = useState({})
     const [TasksData, setTasksData] = useState([])
@@ -88,14 +87,18 @@ export default function TaskScreen() {
     };
 
     return (
-        <Box className={classes.container}>
+        <Box sx={classes.container}>
+            <Typography variant="h4" fontWeight="bold" marginBottom={2}> My Tasks </Typography>
+
             {taskAnalysisData && 
                 <Box display="flex" flexDirection="row" justifyContent="space-between">
-                    <Typography variant="h6" fontWeight="bold" marginBottom={1}> Progress: </Typography><Typography variant="h6" marginBottom={1}> {(taskAnalysisData?.achieved) / 60} / {(taskAnalysisData?.allocated) / 60} hrs </Typography>
-                    <Typography variant="h6" fontWeight="bold" marginBottom={1} textAlign="right"> Total: </Typography><Typography variant="h6" marginBottom={1} textAlign="right"> {taskAnalysisData?.total} hrs </Typography>
+                    <Typography variant="h6" fontWeight="bold" marginBottom={1}> Progress: </Typography>
+                    <Typography variant="h6" marginBottom={1}> {(taskAnalysisData?.achieved) / 60} / {(taskAnalysisData?.allocated) / 60} hrs </Typography>
+                    <Typography variant="h6" fontWeight="bold" marginBottom={1} textAlign="right"> Total: </Typography>
+                    <Typography variant="h6" marginBottom={1} textAlign="right"> {taskAnalysisData?.total} hrs </Typography>
                 </Box>
             }
-            <Box padding={2}>
+            <Stack padding={2} spacing={2}>
                 {TasksData.length !== 0 &&
                     TasksData.map((task, index) => (
                         <Task
@@ -111,7 +114,7 @@ export default function TaskScreen() {
                             isDone={task.isDone} />
                     ))
                 }
-            </Box>
+            </Stack>
             {
                 TasksData.length === 0 &&
                 <Box>
@@ -120,9 +123,9 @@ export default function TaskScreen() {
                         <Typography align="center" variant="caption" color="grey" fontWeight="bold"> Note: Use `+` to create your own tasks </Typography>
                 </Box>
             }
-            <Button className={classes.buttonContainer} onClick={handleButtonClick}>
-                <Box className={classes.button}>
-                    <Typography className={classes.buttonText}>{isButtonClicked ? 'x' : '+'}</Typography>
+            <Button sx={classes.buttonContainer} onClick={handleButtonClick}>
+                <Box sx={classes.button}>
+                    <Typography sx={classes.buttonText}>{isButtonClicked ? 'x' : '+'}</Typography>
                 </Box>
             </Button>
         </Box>

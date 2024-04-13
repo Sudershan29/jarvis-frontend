@@ -12,6 +12,7 @@ const useStyles = makeStyles({
         backgroundColor: '#fff',
         flexDirection: 'column',
         padding: 10,
+        margin: 5,
     },
     dateScrollContainer: {
         height: 100, // Set a fixed height for the date scroll container
@@ -74,6 +75,8 @@ export default function CalendarScreen({ startOfDay }) {
 
     return (
         <Box className={classes.container}>
+            <Typography variant="h4" fontWeight="bold" marginBottom={2}> My Calendar </Typography>
+
             <Box className={classes.dateScrollContainer}>
                 <Box display="flex" flexDirection="row" overflow="auto">
                     {currentDateRange.map((dateInfo, index) => (

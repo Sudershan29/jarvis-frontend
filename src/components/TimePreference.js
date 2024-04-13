@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Button } from '@mui/material';
-import { makeStyles } from "@mui/styles";
+import { Box, Button, Stack, Typography, Grid, useMediaQuery} from '@mui/material';
+
 
 const daysOfTheWeek = [
     { name: 'Sun', value: 0, fullName: 'sunday'},
@@ -12,7 +12,7 @@ const daysOfTheWeek = [
     { name: 'Sat', value: 6, fullName: 'saturday'},
 ]
 
-const useStyles = makeStyles({
+const useStyles = {
     container: {
         display: 'flex',
         justifyContent: 'space-around',
@@ -21,20 +21,23 @@ const useStyles = makeStyles({
     dayCircle: {
         width: 50,
         height: 50,
-        borderRadius: 35,
-        padding: 10,
+        borderRadius: 50,
+        padding: 1,
         backgroundColor: '#E0E0E0',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
     },
     selectedDay: {
+        width: 50,
+        height: 50,
+        borderRadius: 35,
         backgroundColor: '#2196f3',
     },
-});
+};
 
 export default function TimePreference({ timePreferences, setTimePreferences, disableClick}) {
-    const classes = useStyles();
+    const classes = useStyles;
 
     const handleDayClick = (day) => {
         if (disableClick) return;
@@ -48,17 +51,27 @@ export default function TimePreference({ timePreferences, setTimePreferences, di
         }
     };
 
+
+    const isSmallScreen = useMediaQuery('(max-width:600px)');
+
     return (
-        <Box className={classes.container}>
+        <Grid container spacing={2} justifyContent={isSmallScreen ? 'center' : 'flex-start'}>
             {daysOfTheWeek.map(day => (
-                <Button
+                <Grid item>
+                <Button 
+                    variant="contained" shape="circular" color="primary"
                     key={day.value}
-                    className={`${classes.dayCircle} ${timePreferences.includes(day.fullName) && classes.selectedDay}`}
-                    onClick={() => handleDayClick(day)}
+                    sx={timePreferences.includes(day.fullName) ? classes.selectedDay : classes.dayCircle}
+                    onClick={disableClick ? null : () => handleDayClick(day)}
                 >
                     {day.name}
                 </Button>
+                </Grid>
             ))}
-        </Box>
+            { (disableClick == null || !disableClick) && <Box marginTop={2} display="flex" alignItems="center" justifyContent="center">
+                <Typography variant="caption" color="grey" fontWeight="bold" align="center"> Note: If "none" of the days are selected, it implies that any day is acceptable </Typography>
+            </Box>}
+        </Grid>
     );
+
 };

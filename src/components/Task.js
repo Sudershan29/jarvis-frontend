@@ -5,24 +5,22 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { useNavigate } from 'react-router-dom';
 
-const useStyles = makeStyles({
+const useStyles = {
     pastDeadline: {
         backgroundColor: '#FADBD8', // Pale red
-        borderRadius: 10,
+        borderRadius: 2,
     },
     done: {
         backgroundColor: '#D5F5E3', // Pale green
-        borderRadius: 10,
-        padding: 15,
+        borderRadius: 2,
     },
     default: {
         backgroundColor: '#D6EAF8', // Pale blue
-        borderRadius: 10,
-        padding: 15,
+        borderRadius: 2,
     },
     sampleStyle: {
         backgroundColor: '#F9EBEA', // Pale pink
-        borderRadius: 10,
+        borderRadius: 2,
     },
     title: {
         color: '#34495E', // Dark blue
@@ -30,13 +28,12 @@ const useStyles = makeStyles({
     },
     text: {
         color: '#34495E', // Dark blue
-        marginBottom: 10,
     },
-});
+};
 
 export default function Task({ sample, id, name, deadline, scheduled, timepreference, description, duration, hasDeadline, isDone }) {
 
-    const classes = useStyles();
+    const classes = useStyles;
     const navigate = useNavigate();
 
     const cardStyle = () => {
@@ -67,11 +64,11 @@ export default function Task({ sample, id, name, deadline, scheduled, timeprefer
     }
 
     return (
-        <Card className={cardStyle()} onClick={handleButtonClick}>
+        <Card sx={cardStyle()} onClick={handleButtonClick}>
             <CardContent>
-                <Typography className={classes.title}>{!sample ? name : "(Sample) Shop at Trader Joe's"}</Typography>
-                {!sample && hasDeadline && <Typography className={classes.text}> {new Date(deadline).toLocaleString()} </Typography>}
-                { sample && <Typography className={classes.text}> Deadline : Tomorrow </Typography>}
+                <Typography sx={classes.title}>{!sample ? name : "(Sample) Shop at Trader Joe's"}</Typography>
+                {!sample && hasDeadline && <Typography sx={classes.text}> {new Date(deadline).toLocaleString()} </Typography>}
+                { sample && <Typography sx={classes.text}> Deadline : Tomorrow </Typography>}
             </CardContent>
         </Card>
     )

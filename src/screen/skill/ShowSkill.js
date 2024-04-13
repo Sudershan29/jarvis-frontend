@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Button, Typography, Box } from '@mui/material';
+import { Box, Typography, Button, Stack, Grid } from '@mui/material';
 import { makeStyles } from "@mui/styles";
 import TimePreference from "../../components/TimePreference";
 import { AuthContext } from "../../context/AuthContext";
@@ -55,12 +55,33 @@ export default function SkillShowScreen() {
     }, [userToken, id])
 
     return (
-        <Box className={classes.container}>
-            <Typography variant="h6">Name: {skill.name}</Typography>
-            <Typography variant="body1">Duration: {skill.duration}</Typography>
-            <TimePreference disableClick={true} timePreferences={skill.timePreferences ? skill.timePreferences : []} setTimePreferences={()=> {}} />
-            <ProposalGroup proposals={proposals} cancel={(proposalId) => {cancelProposal(userToken, id, proposalId)}} />
+        <Stack margin={2} spacing={2}>
+            <Typography variant="h4" sx={{ textAlign: 'center' }}>{skill.name}</Typography>
+            <Stack spacing={1}>
+                <Stack direction="row" spacing={2}>
+                    <Typography variant="body1" fontWeight="bold">Duration: </Typography>
+                    <Typography variant="body1">{skill.duration} </Typography>
+                </Stack>
+            </Stack>
+            <Stack alignItems="center" spacing={0.1}>
+                <Typography variant="body1" fontWeight="bold">I prefer working on</Typography>
+
+                <TimePreference
+                    disableClick={true}
+                    timePreferences={skill.timePreferences ? skill.timePreferences : []}
+                    setTimePreferences={() => { }}
+                />
+            </Stack>
+
+            <Stack alignItems="center" spacing={0.1}>
+                <ProposalGroup
+                    disableClick={true}
+                    proposals={proposals}
+                    cancel={(proposalId) => { cancelProposal(id, proposalId) }}
+                />
+            </Stack>
+
             <Button variant="contained" color="primary" onClick={() => { }}>Completed</Button>
-        </Box>
+        </Stack>
     )
 }

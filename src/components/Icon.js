@@ -56,7 +56,7 @@ const Icon = ({ name, execute, image, key }) => {
             <IconButton key={key} onClick={execute} className={classes.container}>
                 {RightIcon(image)}
             </IconButton>
-            <Typography component="caption" variant="caption">{name}</Typography>
+            <Typography variant="caption">{name}</Typography>
         </Box>
     );
 };

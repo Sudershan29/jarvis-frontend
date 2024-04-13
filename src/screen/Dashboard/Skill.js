@@ -1,19 +1,19 @@
 import React, { useState, useContext } from "react";
-import { Box, Button, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { Box, Button, Typography, Stack } from "@mui/material";
 import { getSkills, skillAnalysis } from "../../api/Skill";
 import Skill from "../../components/Skill";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from 'react-router-dom';
 
-const useStyles = makeStyles({
+const useStyles = {
     container: {
         flexGrow: 1,
-        padding: 20,
+        margin: 2,
         backgroundColor: 'white',
+        marginBottom: 8,
     },
     buttonContainer: {
-        position: 'absolute',
+        position: 'fixed',
         bottom: 75,
         right: 20,
         width: 50,
@@ -37,10 +37,11 @@ const useStyles = makeStyles({
         fontSize: 30,
         fontWeight: 'bold',
     }
-});
+};
+
 
 export default function SkillScreen() {
-    const classes = useStyles();
+    const classes = useStyles;
     const { userToken, refreshToggle, setFlashMessage } = useContext(AuthContext);
     const [skillsData, setSkillsData] = useState([]);
     const [skillAnalysisData, setSkillAnalysisData] = useState({});
@@ -87,16 +88,18 @@ export default function SkillScreen() {
     };
 
     return (
-        <Box className={classes.container}>
+        <Box sx={classes.container}>
+            <Typography variant="h4" fontWeight="bold" marginBottom={2}> My Skills </Typography>
+
             {skillAnalysisData &&
                 <Box display="flex" flexDirection="row" justifyContent="space-between">
-                    <Typography variant="h6" gutterBottom align="left"> Progress: </Typography><Typography variant="body1"> {(skillAnalysisData?.achieved) / 60} / {(skillAnalysisData?.allocated) / 60} hrs </Typography>
-                    <Typography variant="h6" gutterBottom align="right"> Total: </Typography><Typography variant="body1"> {skillAnalysisData?.total} hrs </Typography>
+                    <Typography variant="h6" fontWeight="bold" marginBottom={1}> Progress: </Typography><Typography variant="h6" marginBottom={1}> {(skillAnalysisData?.achieved) / 60} / {(skillAnalysisData?.allocated) / 60} hrs </Typography>
+                    <Typography variant="h6" fontWeight="bold" marginBottom={1} textAlign="right"> Total: </Typography><Typography variant="h6" marginBottom={1} textAlign="right"> {skillAnalysisData?.total} hrs </Typography>
                 </Box>
             }
-            {skillsData.length !== 0 &&
-                <Box>
-                    {skillsData.map((skill, index) => (
+            <Stack padding={2} spacing={2}>
+                {skillsData.length !== 0 &&
+                    skillsData.map((skill, index) => (
                         <Skill id={skill.id}
                             name={skill.name}
                             duration={skill.duration}
@@ -105,9 +108,10 @@ export default function SkillScreen() {
                             key={index}
                             achieved={skill.achieved}
                             allocated={skill.allocated} />
-                    ))}
-                </Box>
-            }
+                    ))
+                }
+            </Stack>
+
             {
                 skillsData.length === 0 &&
                 <Box>
@@ -116,9 +120,9 @@ export default function SkillScreen() {
                     <Typography align="center" variant="caption" color="textSecondary" fontWeight="bold"> Note: Use `+` to create your own skills </Typography>
                 </Box>
             }
-            <Button className={classes.buttonContainer} onClick={handleButtonClick}>
-                <Box className={classes.button}>
-                    <Typography className={classes.buttonText}>{isButtonClicked ? 'x' : '+'}</Typography>
+            <Button sx={classes.buttonContainer} onClick={handleButtonClick}>
+                <Box sx={classes.button}>
+                    <Typography sx={classes.buttonText}>{isButtonClicked ? 'x' : '+'}</Typography>
                 </Box>
             </Button>
         </Box>

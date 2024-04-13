@@ -3,14 +3,14 @@ import React, { useContext, useEffect } from 'react'
 
 import { Route, Routes } from 'react-router-dom'
 
-import Home from '../screen/Dashboard/Home'
-import Calendar from '../screen/Dashboard/Calendar'
-import Profile from '../screen/Dashboard/Profile'
-import Skill from '../screen/Dashboard/Skill'
+import Home from '../screen/dashboard/Home'
+import Calendar from '../screen/dashboard/Calendar'
+import Profile from '../screen/dashboard/Profile'
+import Skill from '../screen/dashboard/Skill'
 import SkillCreateScreen from '../screen/skill/CreateSkill'
 import ShowSkillScreen from '../screen/skill/ShowSkill'
-import Task from '../screen/Dashboard/Task'
-import TaskScreen from '../screen/task/ShowTask'
+import TaskScreen from '../screen/dashboard/Task'
+import ShowTaskScreen from '../screen/task/ShowTask'
 import TaskCreateScreen from '../screen/task/CreateTask'
 import BottomNav from '../components/BottomNav'
 import Box from '@mui/material/Box'
@@ -27,13 +27,13 @@ export default function AppStackNavigation() {
                 <Route exact path="/skills" element={<Skill />} />
 
                 <Route exact path="/task-create" element={<TaskCreateScreen />} />
-                <Route exact path="/tasks/:id" element={<TaskScreen />} />
-                <Route exact path="/tasks" element={<Task />} />
+                <Route exact path="/tasks/:id" element={<ShowTaskScreen />} />
+                <Route exact path="/tasks" element={<TaskScreen />} />
 
                 <Route exact path="/profile" element={<Profile />} />
                 <Route path="*" element={<Home />} />
             </Routes>
-            <Box mt="auto">
+            <Box>
                 <BottomNav />
             </Box>
         </Box>

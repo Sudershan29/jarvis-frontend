@@ -60,12 +60,14 @@ export default function HomeScreen () {
 
     return (
         <Box className={classes.container}>
+            {/* <Typography variant="h4" fontWeight="bold"> Dashboard </Typography> */}
+
             <Box flex={3}>
                 <ProgressBar title="My Progress" progress={overallProgress} subProgresses={progress} />
             </Box>
 
             <Box flex={1.75} padding={1}>
-                <Typography><Box className={classes.boldText}> Quick Actions </Box></Typography>
+                <Typography fontWeight="bold">Quick Actions</Typography>
                 <Box display="flex" flexDirection="row" overflow="auto">
                     <Icon name={"Replan next 3days"} key={1} execute={async () => { await renderLoadingScreen(() => planMyWeek(userToken)) }} image={"refresh"} />
                     <Icon name={"Sync with Calendar"} key={2} execute={async () => { await renderLoadingScreen(() => calibrateCalendar(userToken)) }} image={"git-pull-request"} />
