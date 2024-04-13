@@ -2,7 +2,7 @@
 import React, {useContext, useState, useEffect} from "react";
 import { Box, Button, Typography, Avatar } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { GoogleCalendarConnectFn, getProfile, getCalendars } from "./../../api/Profile";
+import { GoogleCalendarConnectFn, getProfile, getCalendars } from "../../api/Profile";
 import { AuthContext } from "../../context/AuthContext";
 
 const useStyles = makeStyles({

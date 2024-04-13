@@ -1,15 +1,15 @@
 
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 
 import { Route, Routes } from 'react-router-dom'
 
-import Home from '../screen/dashboard/Home'
-import Calendar from '../screen/dashboard/Calendar'
-import Profile from '../screen/dashboard/Profile'
-import Skill from '../screen/dashboard/Skill'
+import Home from '../screen/Dashboard/Home'
+import TaskScreen from '../screen/Dashboard/Task'
+import Calendar from '../screen/Dashboard/Calendar'
+import Profile from '../screen/Dashboard/Profile'
+import Skill from '../screen/Dashboard/Skill'
 import SkillCreateScreen from '../screen/skill/CreateSkill'
 import ShowSkillScreen from '../screen/skill/ShowSkill'
-import TaskScreen from '../screen/dashboard/Task'
 import ShowTaskScreen from '../screen/task/ShowTask'
 import TaskCreateScreen from '../screen/task/CreateTask'
 import BottomNav from '../components/BottomNav'

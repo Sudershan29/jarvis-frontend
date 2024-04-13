@@ -6,7 +6,7 @@ import Event from "../../components/Event";
 import Icon from "../../components/Icon";
 import { getEvents } from "../../api/Calendar";
 import { planMyWeek, calibrateCalendar, clearMyDay, clearMyWeek } from "../../api/Schedule";
-import { getProgressBar } from "./../../api/Profile";
+import { getProgressBar } from "../../api/Profile";
 import { AuthContext } from "../../context/AuthContext";
 
 const useStyles = makeStyles({
