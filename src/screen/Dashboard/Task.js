@@ -5,6 +5,7 @@ import { getTasks, taskAnalysis } from "../../api/Task";
 import Task from "../../components/Task"
 import { AuthContext } from "../../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
+import { convertMinutesToHours } from "../../utils/time.js";
 
 const useStyles = {
     container: {
@@ -48,32 +49,29 @@ export default function TaskScreen() {
     const navigate = useNavigate();
 
     React.useEffect(() => {
-        const tasks = async() => {
-            const res = await getTasks(userToken)
-            if (res.success)
-                setTasksData(res.tasks)
-            else {
+        const fetchData = async () => {
+            const [taskRes, analysisRes] = await Promise.all([getTasks(userToken), taskAnalysis(userToken)]);
+
+            if (taskRes.success) {
+                setTasksData(taskRes.tasks);
+            } else {
                 setFlashMessage({
-                    message: res.message,
+                    message: taskRes.message,
                     type: "error",
-                })
+                });
+            }
+
+            if (analysisRes.success) {
+                setTaskAnalysisData(analysisRes.data.data);
+            } else {
+                setFlashMessage({
+                    message: analysisRes.message,
+                    type: "error",
+                });
             }
         }
 
-        const analysis = async () => {
-            const res = await taskAnalysis(userToken)
-            if (res.success)
-                setTaskAnalysisData(res.data.data)
-            else {
-                setFlashMessage({
-                    message: res.message,
-                    type: "error",
-                })
-            }
-        }
-
-        analysis();
-        tasks();
+        fetchData();
     }, [refreshToggle])
 
     const handleButtonClick = () => {
@@ -91,11 +89,11 @@ export default function TaskScreen() {
             <Typography variant="h4" fontWeight="bold" marginBottom={2}> My Tasks </Typography>
 
             {taskAnalysisData && 
-                <Box display="flex" flexDirection="row" justifyContent="space-between">
+                <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
                     <Typography variant="h6" fontWeight="bold" marginBottom={1}> Progress: </Typography>
-                    <Typography variant="h6" marginBottom={1}> {(taskAnalysisData?.achieved) / 60} / {(taskAnalysisData?.allocated) / 60} hrs </Typography>
+                    <Typography variant="body1" marginBottom={1}> {convertMinutesToHours(taskAnalysisData?.achieved)} / {convertMinutesToHours(taskAnalysisData?.allocated)} </Typography>
                     <Typography variant="h6" fontWeight="bold" marginBottom={1} textAlign="right"> Total: </Typography>
-                    <Typography variant="h6" marginBottom={1} textAlign="right"> {taskAnalysisData?.total} hrs </Typography>
+                    <Typography variant="body1" marginBottom={1} textAlign="right"> {convertMinutesToHours(taskAnalysisData?.total)}</Typography>
                 </Box>
             }
             <Stack padding={2} spacing={2}>

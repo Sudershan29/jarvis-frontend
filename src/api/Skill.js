@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export async function getSkills(token) {
     try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/skills`, { headers: { 'Authorization': `Bearer ${token}`, "ngrok-skip-browser-warning": "69420" } });
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/skills`, { headers: { 'Authorization': `Bearer ${token}` } });
         if (response.status === 200) {
             return { success: true, skills: response.data.skills }
         }
@@ -15,7 +15,7 @@ export async function getSkills(token) {
 
 export async function getSkill(token, skillId) {
     try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/skills/${skillId}`, { headers: { ' Authorization': `Bearer ${token}`, "ngrok-skip-browser-warning": "69420" } });
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/skills/${skillId}`, { headers: { ' Authorization': `Bearer ${token}` } });
         if (response.status === 200) {
             return { success: true, skill: response.data.skill }
         }
@@ -27,7 +27,7 @@ export async function getSkill(token, skillId) {
 
 export async function createSkill(token, skill) {
     try {
-        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/skills`, skill, { headers: { 'Authorization': `Bearer ${token}`, "ngrok-skip-browser-warning": "69420" } });
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/skills`, skill, { headers: { 'Authorization': `Bearer ${token}` } });
         if (response.status === 200) {
             return { success: true, message: response.data.message }
         }
@@ -40,7 +40,7 @@ export async function createSkill(token, skill) {
 
 export async function getProposals(token, skillId) {
     try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/skills/${skillId}/proposals`, { headers: { 'Authorization': `Bearer ${token}`, "ngrok-skip-browser-warning": "69420" } });
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/skills/${skillId}/proposals`, { headers: { 'Authorization': `Bearer ${token}` } });
 
         if (response.status === 200) {
             return { success: true, proposals: response.data.proposals }
@@ -54,7 +54,7 @@ export async function getProposals(token, skillId) {
 
 export async function cancelProposal(token, skillId, proposalId) {
     try {
-        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/skills/${skillId}/cancel/${proposalId}`, {}, { headers: { 'Authorization': `Bearer ${token}`, "ngrok-skip-browser-warning": "69420" } });
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/skills/${skillId}/cancel/${proposalId}`, {}, { headers: { 'Authorization': `Bearer ${token}` } });
         if (response.status === 200) {
             return { success: true, message: response.data.message }
         } else {
@@ -67,7 +67,7 @@ export async function cancelProposal(token, skillId, proposalId) {
 
 export async function skillAnalysis(token) {
     try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/skills/dashboard`, { headers: { 'Authorization': `Bearer ${token}`, "ngrok-skip-browser-warning": "69420" } });
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/skills/dashboard`, { headers: { 'Authorization': `Bearer ${token}` } });
         if (response.status === 200) {
             return { success: true, data: response.data }
         } else {

@@ -47,3 +47,18 @@ export const getProgressBar = async (token) => {
     }
 }
 
+export const editProfile = async(token, profileType, data) => {
+    try {
+        data['type'] = profileType;
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/updateProfile`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "ngrok-skip-browser-warning": "69420"
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error changing password:', error);
+        return { success: false, message: 'Error changing password' };
+    }
+}

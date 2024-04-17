@@ -37,18 +37,36 @@ export default function LoginScreen() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const { login } = useContext(AuthContext)
+    const { login, setFlashMessage } = useContext(AuthContext)
 
     function NavigateToLogin(){
         window.location.href = GoogleLoginURL();
+    }
+
+    function handleLogin(){
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            setEmail('');
+            setPassword('');
+            setFlashMessage({ message: 'Invalid email format', type: 'error' });
+            return;
+        }
+
+        if(!email || !password)
+            setFlashMessage({ message: 'Please fill all the fields', type: 'error' })
+
+        login(email, password)
     }
 
     const classes = useStyles();
 
     return (
         <Box className={classes.container}>
+            <Typography variant="h4" fontWeight="bold" style={{ marginBottom: 20 }}>Login</Typography>
+
             <Box className={classes.inputView}>
                 <TextField
+                    value={email}
                     className={classes.TextInput}
                     placeholder="Email."
                     variant="outlined"
@@ -57,6 +75,7 @@ export default function LoginScreen() {
             </Box>
             <Box className={classes.inputView}>
                 <TextField
+                    value={password}
                     className={classes.TextInput}
                     placeholder="Password."
                     variant="outlined"
@@ -65,16 +84,20 @@ export default function LoginScreen() {
                 />
             </Box>
 
-            <Grid container direction="row" justifyContent="center">
-                <Button
-                    variant="contained"
-                    onClick={() => login(email, password)}
-                >
-                    Login
-                </Button>
-            </Grid>
+            <Grid container direction="column" justifyContent="center" spacing={2} alignItems="center" padding={2}>
+                <Grid item>
+                    <Button
+                        variant="contained"
+                        onClick={() => handleLogin()}
+                    >
+                        Login
+                    </Button>
+                </Grid>
 
-            <GoogleButton variant="contained" onClick={NavigateToLogin} />
+                <Grid item>
+                    <GoogleButton variant="contained" onClick={NavigateToLogin} />
+                </Grid>
+            </Grid>
 
             <Typography
                 variant="body2"

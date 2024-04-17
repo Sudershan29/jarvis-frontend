@@ -6,6 +6,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { getProposals, cancelProposal, getSkill } from "../../api/Skill";
 import ProposalGroup from "../../components/ProposalGroup";
 import { useParams } from 'react-router-dom';
+import { convertMinutesToHours } from "../../utils/time";
 
 const useStyles = makeStyles({
     container: {
@@ -60,7 +61,7 @@ export default function SkillShowScreen() {
             <Stack spacing={1}>
                 <Stack direction="row" spacing={2}>
                     <Typography variant="body1" fontWeight="bold">Duration: </Typography>
-                    <Typography variant="body1">{skill.duration} </Typography>
+                    <Typography variant="body1">{convertMinutesToHours(skill.duration)} </Typography>
                 </Stack>
             </Stack>
             <Stack alignItems="center" spacing={0.1}>

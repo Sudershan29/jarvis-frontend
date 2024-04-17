@@ -3,6 +3,7 @@ import { Box, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { useNavigate } from 'react-router-dom';
+import { convertMinutesToHours } from "../utils/time.js";
 
 const useStyles = {
     pastDeadline: {
@@ -64,11 +65,11 @@ export default function Skill({ sample, id, name, duration, scheduled, deadline,
         <Card sx={cardStyle()} onClick={handleButtonClick}>
             <CardContent>
                 <Typography sx={classes.title}>{!sample ? name : "(Sample) Learn to Crochet"}</Typography>
-                {!sample && duration && <Typography sx={classes.text}> Total : {duration} hours per week </Typography>}
+                {!sample && duration && <Typography sx={classes.text}> Total : {convertMinutesToHours(duration)} </Typography>}
                 {/* {!sample && <Typography sx={classes.text}> Categories : {categories.join(', ')} </Typography>} */}
                 {!sample && <Typography sx={classes.text}> Achieved({achieved}) / Allocated({allocated}) </Typography>}
                 {/* {!sample && <Typography sx={classes.text}> Completion Ratio : {Math.floor(achieved * 100/ allocated)}% </Typography>} */}
-                {sample && <Typography sx={classes.text}> Total : 2 hours per week </Typography>}
+                {sample && <Typography sx={classes.text}> Total : 120 minutes per week </Typography>}
             </CardContent>
         </Card>
     )

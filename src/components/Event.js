@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     }
 });
 
-const Event = ({ events, heading, isDate }) => {
+const Event = ({ events, heading, isDate, errorMessage }) => {
     const classes = useStyles();
 
     const groupEvents = () => {
@@ -58,7 +58,7 @@ const Event = ({ events, heading, isDate }) => {
             {isDate && <Typography variant="body1" fontWeight="bold"> {heading?.day}, {heading?.date + " " + heading?.month}</Typography>}
             {events.length === 0 ?
                 <Box className={classes.center}>
-                    <Typography>No upcoming events for today</Typography> 
+                    <Typography>{errorMessage ?  errorMessage : 'No upcoming events for today' }</Typography> 
                 </Box> 
                 : renderEventGroups()}
         </Box>

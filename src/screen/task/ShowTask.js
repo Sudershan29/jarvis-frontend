@@ -6,6 +6,7 @@ import TimePreference from "../../components/TimePreference";
 import { getProposals, cancelProposal, markAsCompleted, getTask } from "../../api/Task";
 import ProposalGroup from "../../components/ProposalGroup";
 import { useParams } from 'react-router-dom';
+import { convertMinutesToHours } from "../../utils/time";
 
 const useStyles = makeStyles({
     container: {
@@ -59,7 +60,7 @@ export default function TaskShowScreen() {
                 </Stack>
                 <Stack direction="row" spacing={2}>
                     <Typography variant="body1" fontWeight="bold">Total Duration: </Typography>
-                    <Typography variant="body1">{Math.floor(task.duration / 60)}h {task.duration % 60}m</Typography>
+                    <Typography variant="body1">{convertMinutesToHours(task.duration)}</Typography>
                 </Stack>
             </Stack>
             <Stack alignItems="center" spacing={0.1}>

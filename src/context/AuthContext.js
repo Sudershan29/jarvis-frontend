@@ -34,14 +34,14 @@ export const AuthProvider = ({ children }) => {
             return;
         }
         setUserToken(response.token)
-        localStorage.setItem('@LoginStore:userToken', response.token)
+        localStorage.setItem(`@LoginStore:userToken-${process.env.REACT_APP_COOKIE_PREFIX}`, response.token)
         setIsLoading(false)
     }
 
     async function loginGoogleSuccess(token) {
         setIsLoading(true)
         setUserToken(token)
-        localStorage.setItem('@LoginStore:userToken', token)
+        localStorage.setItem(`@LoginStore:userToken-${process.env.REACT_APP_COOKIE_PREFIX}`, token)
         setIsLoading(false)
     }
 
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
         }
 
         setUserToken(response.token)
-        localStorage.setItem('@LoginStore:userToken', response.token)
+        localStorage.setItem(`@LoginStore:userToken-${process.env.REACT_APP_COOKIE_PREFIX}`, response.token)
         setIsLoading(false)
     }
 
@@ -72,14 +72,14 @@ export const AuthProvider = ({ children }) => {
     function logout() {
         setIsLoading(true)
         setUserToken(null)
-        localStorage.removeItem('@LoginStore:userToken')
+        localStorage.removeItem(`@LoginStore:userToken-${process.env.REACT_APP_COOKIE_PREFIX}`)
         setIsLoading(false)
     }
 
     async function checkLoginStatus() {
         try {
             setIsLoading(true)
-            let userToken = localStorage.getItem('@LoginStore:userToken');
+            let userToken = localStorage.getItem(`@LoginStore:userToken-${process.env.REACT_APP_COOKIE_PREFIX}`);
             setUserToken(userToken)
             setIsLoading(false)
         } catch (e) {

@@ -17,9 +17,8 @@ export const getEvents = async (token, startDate, endDate) => {
                 "ngrok-skip-browser-warning": "69420"
             }
         });
-        return response.data.events;
+        return { success: true, events: response.data.events, message: '' };
     } catch (error) {
-        console.error('Error fetching events:', error);
-        return [];
+        return { success: false, events: [], message: 'Please resync your calendar' };
     }
 }

@@ -14,6 +14,7 @@ import ShowTaskScreen from '../screen/task/ShowTask'
 import TaskCreateScreen from '../screen/task/CreateTask'
 import BottomNav from '../components/BottomNav'
 import Box from '@mui/material/Box'
+import ProfileEditScreen from '../screen/dashboard/ProfileEdit'
 
 export default function AppStackNavigation() {
     return (
@@ -31,6 +32,7 @@ export default function AppStackNavigation() {
                 <Route exact path="/tasks" element={<TaskScreen />} />
 
                 <Route exact path="/profile" element={<Profile />} />
+                <Route exact path="/profile-edit" element={<ProfileEditScreen />} />
                 <Route path="*" element={<Home />} />
             </Routes>
             <Box>

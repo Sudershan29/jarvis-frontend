@@ -28,7 +28,7 @@ export default function BottomNav() {
             return 3;
         } else if (path === '/calendar') {
             return 2;
-        } else if (path === '/profile') {
+        } else if (path === '/profile' || path === '/profile-edit') {
             return 4;
         } else {
             return 0;

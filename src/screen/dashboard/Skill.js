@@ -4,6 +4,7 @@ import { getSkills, skillAnalysis } from "../../api/Skill";
 import Skill from "../../components/Skill";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from 'react-router-dom';
+import { convertMinutesToHours } from "../../utils/time.js";
 
 const useStyles = {
     container: {
@@ -92,9 +93,9 @@ export default function SkillScreen() {
             <Typography variant="h4" fontWeight="bold" marginBottom={2}> My Skills </Typography>
 
             {skillAnalysisData &&
-                <Box display="flex" flexDirection="row" justifyContent="space-between">
-                    <Typography variant="h6" fontWeight="bold" marginBottom={1}> Progress: </Typography><Typography variant="h6" marginBottom={1}> {(skillAnalysisData?.achieved) / 60} / {(skillAnalysisData?.allocated) / 60} hrs </Typography>
-                    <Typography variant="h6" fontWeight="bold" marginBottom={1} textAlign="right"> Total: </Typography><Typography variant="h6" marginBottom={1} textAlign="right"> {skillAnalysisData?.total} hrs </Typography>
+                <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+                    <Typography variant="h6" fontWeight="bold" marginBottom={1}> Progress: </Typography><Typography variant="body1" marginBottom={1}> {convertMinutesToHours(skillAnalysisData?.achieved)} / {convertMinutesToHours(skillAnalysisData?.allocated)} </Typography>
+                    <Typography variant="h6" fontWeight="bold" marginBottom={1} textAlign="right"> Total: </Typography><Typography variant="body1" marginBottom={1} textAlign="right"> {convertMinutesToHours(skillAnalysisData?.total)} </Typography>
                 </Box>
             }
             <Stack padding={2} spacing={2}>

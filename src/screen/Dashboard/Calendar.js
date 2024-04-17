@@ -34,6 +34,7 @@ export default function CalendarScreen({ startOfDay }) {
     const [activeDateIndex, setActiveDateIndex] = useState(0);
     const [currentDate, setCurrentDate] = useState(today);
     const [currEvents, setCurrEvents] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         generateDateRange(0);
@@ -43,7 +44,12 @@ export default function CalendarScreen({ startOfDay }) {
         const fetchData = async () => {
             let dayAfterCurrentDate = new Date(currentDate);
             dayAfterCurrentDate.setDate(currentDate.getDate() + 1); // Add 24 hours to the current date
-            const events = await getEvents(userToken, currentDate.toISOString(), dayAfterCurrentDate.toISOString());
+            const eventsResp = await getEvents(userToken, currentDate.toISOString(), dayAfterCurrentDate.toISOString());
+            if (!eventsResp.success){
+                setErrorMessage(eventsResp.message);
+                return;
+            }
+            const events = eventsResp.events;
             events.sort((a, b) => new Date(a.startTime) - new Date(b.startTime)); // Sort events by start time
             setCurrEvents(events);
         };
