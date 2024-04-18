@@ -53,6 +53,7 @@ export default function SignUpScreen() {
 
     return (
         <Box className={classes.container}>
+            <Typography variant="h4" fontWeight="bold" margin={2}>Sign Up</Typography>
             <Box className={classes.inputView}>
                 <TextField
                     className={classes.TextInput}
