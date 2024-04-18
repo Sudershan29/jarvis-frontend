@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom'
 import Home from '../screen/dashboard/Home'
 import TaskScreen from '../screen/dashboard/Task'
 import Calendar from '../screen/dashboard/Calendar'
+import Plan from '../screen/dashboard/Plan'
 import Profile from '../screen/dashboard/Profile'
 import Skill from '../screen/dashboard/Skill'
 import SkillCreateScreen from '../screen/skill/CreateSkill'
@@ -22,6 +23,7 @@ export default function AppStackNavigation() {
             <Routes>
                 <Route exact path="/" element={<Home />} />
                 <Route exact path="/calendar" element={<Calendar />} />
+                <Route exact path="/plan" element={<Plan />} />
 
                 <Route exact path="/skills-create" element={<SkillCreateScreen />} />
                 <Route exact path="/skills/:id" element={<ShowSkillScreen />} />

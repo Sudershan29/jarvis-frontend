@@ -8,6 +8,7 @@ import { getEvents } from "../../api/Calendar";
 import { planMyWeek, calibrateCalendar, clearMyDay, clearMyWeek } from "../../api/Schedule";
 import { getProgressBar } from "../../api/Profile";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles({
     container: {
@@ -36,8 +37,8 @@ export default function HomeScreen () {
     const [ progress, setProgress ] = useState([])
     const [ overallProgress, setOverallProgress] = useState(0)
     const [ errorMessage, setErrorMessage ] = useState('')
-
     const [upcomingEvents, setUpcomingEvents] = useState([])
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -85,7 +86,8 @@ export default function HomeScreen () {
             <Box flex={1.75} padding={1}>
                 <Typography fontWeight="bold">Quick Actions</Typography>
                 <Box display="flex" flexDirection="row" overflow="auto">
-                    <Icon name={"Plan next 3 days"} key={1} execute={async () => { await renderLoadingScreen(() => planMyWeek(userToken)) }} image={"refresh"} />
+                    <Icon name={"Plan next 3 days"} key={0} execute={async () => { await renderLoadingScreen(() => planMyWeek(userToken)) }} image={"refresh"} />
+                    <Icon name={"Try our AI Planner"} key={1} execute={() => { navigate('/plan') }} image={"refresh"} />
                     <Icon name={"Sync with Calendar"} key={2} execute={async () => { await renderLoadingScreen(() => calibrateCalendar(userToken)) }} image={"git-pull-request"} />
                     <Icon name={"Clear My Day"} key={3} execute={async () => { await renderLoadingScreen(() => clearMyDay (userToken)) }} image={"battery-dead"} /> 
                     <Icon name={"Clear My Week"} key={4} execute={async () => { await renderLoadingScreen(() => clearMyWeek(userToken)) }} image={"airplane-outline"} />

@@ -5,7 +5,7 @@ import { Box, Typography, Stack, Button, Grid, TextField } from '@mui/material';
 import { createRoutine, removeRoutine } from '../api/Routine';
 import { AuthContext } from '../context/AuthContext';
 
-function Schedule({ name, start, end, key, scheduleId, removable = true, refreshToggle }){
+function Schedule({ name, start, index, end, scheduleId, removable = true, refreshToggle }){
     const { userToken, setFlashMessage } = useContext(AuthContext);
 
     const removeRoutineAPI = async () => {
@@ -25,7 +25,7 @@ function Schedule({ name, start, end, key, scheduleId, removable = true, refresh
     }
 
     return (
-        <Grid container direction="row" spacing={1} key={key} sx={{ width: 350, marginBottom: 0.5, marginTop: 0.5 }} justifyContent="center" alignContent="center">
+        <Grid container direction="row" spacing={1} key={index} sx={{ width: 350, marginBottom: 0.5, marginTop: 0.5 }} justifyContent="center" alignContent="center">
             <Grid item xs={3}><Typography variant="body1">{name}</Typography></Grid>
             <Grid item xs={3}><Typography variant="body1">{start}</Typography></Grid>
             <Grid item xs={3}><Typography variant="body1" alignItems="center">{end}</Typography></Grid>
@@ -90,7 +90,7 @@ export default function ScheduleGroup({ schedule = [], refresh }){
                         <Grid item xs={3}><Typography variant="body1" fontWeight="bold">Remove</Typography></Grid>
                     </Grid>
                     {schedule.map((ss, index) => (
-                        <Schedule key={index} name={ss.name} start={ss.start} end={ss.end} removable={ss.removable} scheduleId={ss.id} refreshToggle={()=>refresh()}/>
+                        <Schedule key={index} index={index} name={ss.name} start={ss.start} end={ss.end} removable={ss.removable} scheduleId={ss.id} refreshToggle={()=>refresh()}/>
                     ))}
                 </Box>
             }
