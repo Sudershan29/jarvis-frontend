@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Box, Typography, Button } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import ProgressBar from "../../components/ProgressBar";
 import Event from "../../components/Event";
 import Icon from "../../components/Icon";
@@ -10,13 +9,14 @@ import { getProgressBar } from "../../api/Profile";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from 'react-router-dom';
 
-const useStyles = makeStyles({
+const useStyles = {
     container: {
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: '#fff',
-        padding: 10,
-        margin: 5,
+        padding: 1,
+        margin: 0.25,
+        marginBottom: 5,
     },
     boldText: {
         fontSize: 20, 
@@ -26,18 +26,18 @@ const useStyles = makeStyles({
         width: '100%',
         height: 1,
         backgroundColor: '#ccc',
-        marginVertical: 5,
-        margin: 5,
+        marginVertical: 1.5,
+        margin: 1.5,
     },
-});
+};
 
 export default function HomeScreen () {
-    const classes = useStyles();
+    const classes = useStyles;
     const { userToken, renderLoadingScreen } = useContext(AuthContext)
     const [ progress, setProgress ] = useState([])
     const [ overallProgress, setOverallProgress] = useState(0)
     const [ errorMessage, setErrorMessage ] = useState('')
-    const [upcomingEvents, setUpcomingEvents] = useState([])
+    const [ upcomingEvents, setUpcomingEvents ] = useState([])
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -64,7 +64,7 @@ export default function HomeScreen () {
                     pp.completionRatio = Math.min(pp.sum_ach / pp.sum_alloc * 100, 100);
                 })
                 progressBars.sort((a, b) => b.completionRatio - a.completionRatio);
-                setProgress(progressBars.slice(0, 3));
+                setProgress(progressBars.slice(0, 5));
                 setOverallProgress(Math.ceil((progressData.data.achieved * 100) / progressData.data.allocated))
             }
         }
@@ -74,27 +74,27 @@ export default function HomeScreen () {
     }, []);
 
     return (
-        <Box className={classes.container}>
+        <Box sx={classes.container}>
             <Typography variant="h4" fontWeight="bold"> Dashboard </Typography>
 
             <Box flex={3}>
                 <ProgressBar title="My Progress" progress={overallProgress} subProgresses={progress} />
             </Box>
 
-            <Box className={classes.divider}></Box>
+            <Box sx={classes.divider}></Box>
 
             <Box flex={1.75} padding={1}>
                 <Typography fontWeight="bold">Quick Actions</Typography>
                 <Box display="flex" flexDirection="row" overflow="auto">
                     <Icon name={"Plan next 3 days"} key={0} execute={async () => { await renderLoadingScreen(() => planMyWeek(userToken)) }} image={"refresh"} />
-                    <Icon name={"Try our AI Planner"} key={1} execute={() => { navigate('/plan') }} image={"refresh"} />
+                    <Icon name={"Plan with AI"} key={1} execute={() => { navigate('/plan') }} image={"refresh"} experimentalTitle ={"Try AI"}/>
                     <Icon name={"Sync with Calendar"} key={2} execute={async () => { await renderLoadingScreen(() => calibrateCalendar(userToken)) }} image={"git-pull-request"} />
                     <Icon name={"Clear My Day"} key={3} execute={async () => { await renderLoadingScreen(() => clearMyDay (userToken)) }} image={"battery-dead"} /> 
                     <Icon name={"Clear My Week"} key={4} execute={async () => { await renderLoadingScreen(() => clearMyWeek(userToken)) }} image={"airplane-outline"} />
                 </Box>
             </Box>
 
-            <Box className={classes.divider}></Box>
+            <Box sx={classes.divider}></Box>
 
             <Box flex={6} padding={1}>
                 <Event heading={"Upcoming Events"} 

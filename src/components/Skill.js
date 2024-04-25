@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Grid } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { useNavigate } from 'react-router-dom';
@@ -21,15 +21,7 @@ const useStyles = {
     sampleStyle: {
         backgroundColor: '#eff8ff', // Pale blue
         borderRadius: 2,
-    },
-    title: {
-        color: '#34495E', // Dark blue
-        fontSize: 18,
-    },
-    text: {
-        color: '#34495E', // Dark blue
-        marginBottom: 2,
-    },
+    }
 };
 
 export default function Skill({ sample, id, name, duration, scheduled, deadline, timepreference, categories, achieved, allocated }) {
@@ -63,13 +55,33 @@ export default function Skill({ sample, id, name, duration, scheduled, deadline,
 
     return (
         <Card sx={cardStyle()} onClick={handleButtonClick}>
-            <CardContent>
-                <Typography sx={classes.title}>{!sample ? name : "(Sample) Learn to Crochet"}</Typography>
-                {!sample && duration && <Typography sx={classes.text}> Total : {convertMinutesToHours(duration)} </Typography>}
-                {/* {!sample && <Typography sx={classes.text}> Categories : {categories.join(', ')} </Typography>} */}
-                {!sample && <Typography sx={classes.text}> Achieved({achieved}) / Allocated({allocated}) </Typography>}
-                {/* {!sample && <Typography sx={classes.text}> Completion Ratio : {Math.floor(achieved * 100/ allocated)}% </Typography>} */}
-                {sample && <Typography sx={classes.text}> Total : 120 minutes per week </Typography>}
+            <CardContent sx={classes.cardContent}>
+                <Typography sx={classes.title} variant="h6" fontWeight="bold" paddingBottom={2}>
+                    {!sample ? name : "(Sample) Learn to Crochet"}
+                </Typography>
+                {/* {!sample && <Typography> Categories : {categories.join(', ')} </Typography>} */}
+                {!sample && 
+                    <Grid container direction="row">
+                        <Grid item xs={4}> <Typography sx={{ textDecoration: 'underline', fontStyle: 'italic' }}> Achieved </Typography> </Grid>
+                        <Grid item xs={4}> <Typography> {convertMinutesToHours(achieved)} </Typography> </Grid>
+                    </Grid>
+                }
+                {!sample && 
+                    <Grid container direction="row">
+                        <Grid item xs={4}> <Typography sx={{ textDecoration: 'underline', fontStyle: 'italic' }}> Allocated </Typography> </Grid>
+                        <Grid item xs={4}> <Typography> {convertMinutesToHours(allocated)} </Typography> </Grid>
+                    </Grid>
+                }
+                {!sample && duration &&
+                    <Grid container direction="row">
+                        <Grid item xs={4}> <Typography sx={{ textDecoration: 'underline', fontStyle: 'italic' }}> Total </Typography> </Grid>
+                        <Grid item xs={4}> <Typography> {convertMinutesToHours(duration)} </Typography> </Grid>
+                    </Grid>
+                }
+                {/* {!sample && <Typography> Completion Ratio : {Math.floor(achieved * 100/ allocated)}% </Typography>} */}
+                {sample && 
+                    <Typography> Total : 120 minutes per week </Typography>
+                }
             </CardContent>
         </Card>
     )

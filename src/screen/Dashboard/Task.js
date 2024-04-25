@@ -109,6 +109,8 @@ export default function TaskScreen() {
                             categories={task.categories}
                             timepreference={task.timepreference}
                             hasDeadline={task.hasDeadline}
+                            achieved={task.achieved}
+                            allocated={task.allocated}
                             isDone={task.isDone} />
                     ))
                 }

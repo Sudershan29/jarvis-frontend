@@ -7,6 +7,7 @@ import { getProposals, cancelProposal, markAsCompleted, getTask } from "../../ap
 import ProposalGroup from "../../components/ProposalGroup";
 import { useParams } from 'react-router-dom';
 import { convertMinutesToHours } from "../../utils/time";
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles({
     container: {
@@ -21,6 +22,7 @@ const useStyles = makeStyles({
 
 export default function TaskShowScreen() {
     const classes = useStyles();
+    const navigate = useNavigate();
     const { userToken, setFlashMessage } = useContext(AuthContext);
     const { id } = useParams();
     const [task, setTask] = useState({});
@@ -81,7 +83,7 @@ export default function TaskShowScreen() {
                 />
             </Stack>
 
-            <Button variant="contained" onClick={() => { markAsCompleted (userToken, id)}}>Mark as Done</Button>
+            <Button variant="contained" onClick={() => { markAsCompleted(userToken, id); navigate('/tasks') }}>Mark as Done</Button>
         </Stack>
     )
 }

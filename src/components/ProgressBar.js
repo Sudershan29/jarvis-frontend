@@ -1,6 +1,6 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
-import { makeStyles } from "@mui/styles";
+import React, {useState} from 'react';
+import FormControlLabel from '@mui/material/FormControlLabel'
+import { Box, Typography, Button, Switch } from '@mui/material';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { styled } from '@mui/system';
 import ProgressBarMini from './ProgressBarMini';
@@ -17,11 +17,11 @@ const ColorLinearProgress = styled(LinearProgress)(({ theme }) => ({
   },
 }));
 
-const useStyles = makeStyles({
+const useStyles = {
     container: {
-        padding: 10,
+        padding: 1,
         backgroundColor: '#fff',
-        borderRadius: 10,
+        borderRadius: 2,
         overflow: 'hidden',
         width: '95%',
         // boxShadow: '0px 2px 2px 0.5px rgba(0,0,0,0.3)',
@@ -39,26 +39,70 @@ const useStyles = makeStyles({
     },
     progressText: {
         textAlign: 'right',
-        paddingRight: 5,
+        paddingRight: 1,
+        paddingBottom: 1,
         position: 'absolute', // Made progressText absolute
         right: 0, // Positioned it to the right
-        top: 0, // Positioned it to the top
+        top: -1, // Positioned it to the top
         zIndex: 1, // Made it appear above the progress bar
     }
-});
+};
+
+const Android12Switch = styled(Switch)(({ }) => ({
+    padding: 8,
+    '& .MuiSwitch-track': {
+        borderRadius: 22 / 2,
+        '&::before, &::after': {
+            content: '""',
+            position: 'absolute',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: 16,
+            height: 16,
+        },
+        '&::before': {
+            backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="#fff" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+            left: 12,
+        },
+        '&::after': {
+            backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="#fff" d="M19,13H5V11H19V13Z" /></svg>')`,
+            right: 12,
+        },
+    },
+    '& .MuiSwitch-thumb': {
+        boxShadow: 'none',
+        width: 16,
+        height: 16,
+        margin: 2,
+    },
+}));
 
 export default function ProgressBar({ title, progress, subProgresses = [] }) {
-    const classes = useStyles();
+    const [isChecked, setIsChecked] = useState(false);
+
+    const handleChange = (event) => {
+        setIsChecked(event.target.checked);
+    };
+
+    const classes = useStyles;
     const progressCapped = Math.min(progress, 100);
     return (
-        <Box className={classes.container}>
+        <Box sx={classes.container}>
             <Typography fontWeight="bold">{title}</Typography>
-            <Box className={classes.progressBar}>
+            <Box sx={classes.progressBar}>
                 <ColorLinearProgress variant="determinate" value={Math.min(progressCapped + 10, 100)} />
-                <Typography className={classes.progressText}><Box sx={{fontWeight: 'bold'}}> {`${progressCapped}%`} </Box></Typography>
+                <Typography sx={classes.progressText} fontWeight="bold">{`${progressCapped}%`}</Typography>
+            </Box>
+            <Box sx={{ }}>
+                <FormControlLabel
+                    control={<Android12Switch value={isChecked} onChange={handleChange} />}
+                    label="Show Completed"
+                />
             </Box>
             {subProgresses.map((sub, index) => (
-                <ProgressBarMini key={index} name={sub.name} value={Math.ceil(sub.completionRatio)} index={index} />
+                (sub.completionRatio < 100 || isChecked) && (
+                    <ProgressBarMini key={index} name={sub.name} value={Math.ceil(sub.completionRatio)} index={index} />
+                )
             ))}
         </Box>
     );

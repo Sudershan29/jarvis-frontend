@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
-import {Grid, Typography, CircularProgress} from '@mui/material';
 import { AuthContext } from "../context/AuthContext";
 import AppStack from "./AppStack";
 import LoginStack from "./LoginStack";
+import Loader from "../components/Loader";
 
 export default function AppNav() {
     const { isLoggedIn, isLoading } = useContext(AuthContext)
@@ -22,10 +22,7 @@ export default function AppNav() {
 
     if (isLoading)
         return (
-            <Grid container style={{ height: '100vh' }} direction="column" justifyContent="center" alignItems="center">
-                <CircularProgress />
-                <Typography variant="h6" align="center">{loadingText}</Typography>
-            </Grid>
+            <Loader loadingText={loadingText}/>
         )
 
     return (

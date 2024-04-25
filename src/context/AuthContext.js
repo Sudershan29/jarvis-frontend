@@ -1,6 +1,7 @@
 
 import React, { createContext, useState, useEffect } from 'react'
 import { userLogin, userGoogleLogin, userSignUp } from "../api/Login"
+import { calibrateCalendar } from '../api/Schedule'
 
 export const AuthContext = createContext()
 
@@ -13,6 +14,9 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         checkLoginStatus()
+        setTimeout(async () => {
+            await runSync()
+        }, 1000 * 60 * 15)   // Every 15minutes
     }, []);
 
     function setFlashMessage(message) {
@@ -33,8 +37,9 @@ export const AuthProvider = ({ children }) => {
             setIsLoading(false);
             return;
         }
-        setUserToken(response.token)
         localStorage.setItem(`@LoginStore:userToken-${process.env.REACT_APP_COOKIE_PREFIX}`, response.token)
+        setUserToken(response.token)
+        await runSync()
         setIsLoading(false)
     }
 
@@ -115,12 +120,20 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    async function runSync() {
+        if (!isLoggedIn())
+            return;
+
+        await calibrateCalendar(userToken)
+    }
+
     return (
         <AuthContext.Provider value={{
             userToken, isLoading, connectedToCalendar,
             refreshToggle, flashMessage, setFlashMessage, setRefreshToggle,
             isLoggedIn, login, logout, loginGoogle, signUp,
-            loginGoogleSuccess, calendarConnectSuccess, renderLoadingScreen
+            loginGoogleSuccess, calendarConnectSuccess, renderLoadingScreen,
+            runSync
         }}>
             {children}
         </AuthContext.Provider>

@@ -25,13 +25,6 @@ const useStyles = makeStyles({
 const EventGroup = ({ group, index }) => {
     const classes = useStyles();
 
-    const isToday = (date) => {
-        const today = new Date();
-        return date.getDate() === today.getDate() &&
-            date.getMonth() === today.getMonth() &&
-            date.getFullYear() === today.getFullYear();
-    };
-
     const getColor = (event) => {
         let color = '#00000080'; // Default color
         if (event.color) 
@@ -51,14 +44,17 @@ const EventGroup = ({ group, index }) => {
 
     const startTime = new Date(group[0].startTime);
     const endTime = new Date(group[group.length - 1].endTime);
+
     const startTimeStr = `${startTime.getHours()}:${startTime.getMinutes() == 0 ? '00' : startTime.getMinutes()}`;
     const endTimeStr = `${endTime.getHours()}:${endTime.getMinutes() == 0 ? '00' : endTime.getMinutes() }`;
 
+    const showGroup = group.some(event => !event.internal);
+
     return (
         <Box className={classes.eventGroupContainer} index={index}>
-            <Typography className={classes.eventTime}>{`${startTimeStr} - ${endTimeStr}`}</Typography>
+            {showGroup  &&<Typography className={classes.eventTime}>{`${startTimeStr} - ${endTimeStr}`}</Typography> }
             {group.map((event, index) => (
-                <Box key={index} className={classes.event} style={{ backgroundColor: getColor(event) }}>
+                !event.internal && <Box key={index} className={classes.event} style={{ backgroundColor: getColor(event) }}>
                     <Typography className={classes.eventText}>{event.name}</Typography>
                 </Box>
             ))}

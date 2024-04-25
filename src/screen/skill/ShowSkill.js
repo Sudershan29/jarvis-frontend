@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Box, Typography, Button, Stack, Grid } from '@mui/material';
-import { makeStyles } from "@mui/styles";
 import TimePreference from "../../components/TimePreference";
 import { AuthContext } from "../../context/AuthContext";
 import { getProposals, cancelProposal, getSkill } from "../../api/Skill";
@@ -8,7 +7,7 @@ import ProposalGroup from "../../components/ProposalGroup";
 import { useParams } from 'react-router-dom';
 import { convertMinutesToHours } from "../../utils/time";
 
-const useStyles = makeStyles({
+const useStyles = {
     container: {
         display: 'flex',
         flexDirection: 'column',
@@ -16,12 +15,11 @@ const useStyles = makeStyles({
         justifyContent: 'center',
         padding: 20,
     },
-});
+};
 
 export default function SkillShowScreen() {
     const { userToken, setFlashMessage } = useContext(AuthContext);
     const { id } = useParams();
-    const classes = useStyles();
 
     const [proposals, setProposals] = useState([]);
     const [skill, setSkill] = useState({});

@@ -1,9 +1,10 @@
 import React from "react";
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Grid } from '@mui/material';
 import { makeStyles } from "@mui/styles";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { useNavigate } from 'react-router-dom';
+import { convertMinutesToHours } from "../utils/time.js";
 
 const useStyles = {
     pastDeadline: {
@@ -27,11 +28,11 @@ const useStyles = {
         fontSize: 18,
     },
     text: {
-        color: '#34495E', // Dark blue
+        color: '#000', // Dark blue
     },
 };
 
-export default function Task({ sample, id, name, deadline, scheduled, timepreference, description, duration, hasDeadline, isDone }) {
+export default function Task({ sample, id, name, deadline, scheduled, timepreference, description, duration, hasDeadline, isDone, achieved, allocated }) {
 
     const classes = useStyles;
     const navigate = useNavigate();
@@ -66,8 +67,43 @@ export default function Task({ sample, id, name, deadline, scheduled, timeprefer
     return (
         <Card sx={cardStyle()} onClick={handleButtonClick}>
             <CardContent>
-                <Typography sx={classes.title}>{!sample ? name : "(Sample) Shop at Trader Joe's"}</Typography>
-                {!sample && hasDeadline && <Typography sx={classes.text}> {new Date(deadline).toLocaleString()} </Typography>}
+                <Typography sx={classes.title} variant="h6" fontWeight="bold" paddingBottom={2}>
+                    {!sample ? name : "(Sample) Shop at Trader Joe's"}
+                </Typography>
+
+                {!sample &&
+                    <Grid container direction="row">
+                        <Grid item xs={4}> <Typography sx={{ textDecoration: 'underline', fontStyle: 'italic' }}> Description </Typography> </Grid>
+                        <Grid item xs={8}> <Typography> {description.substr(0, Math.min(25, description.length)) + '...'} </Typography> </Grid>
+                    </Grid>
+                }
+
+                {!sample &&
+                    <Grid container direction="row">
+                        <Grid item xs={4}> <Typography sx={{ textDecoration: 'underline', fontStyle: 'italic' }}> Achieved </Typography> </Grid>
+                        <Grid item xs={4}> <Typography> {convertMinutesToHours(achieved)} </Typography> </Grid>
+                    </Grid>
+                }
+                {!sample &&
+                    <Grid container direction="row">
+                        <Grid item xs={4}> <Typography sx={{ textDecoration: 'underline', fontStyle: 'italic' }}> Allocated </Typography> </Grid>
+                        <Grid item xs={4}> <Typography> {convertMinutesToHours(allocated)} </Typography> </Grid>
+                    </Grid>
+                }
+
+                {!sample &&
+                    <Grid container direction="row">
+                        <Grid item xs={4}> <Typography sx={{ textDecoration: 'underline', fontStyle: 'italic' }}> Total </Typography> </Grid>
+                        <Grid item xs={4}> <Typography> {convertMinutesToHours(duration)} </Typography> </Grid>
+                    </Grid>
+                }
+
+                {!sample && hasDeadline && 
+                    <Grid container direction="row">
+                        <Grid item xs={4}> <Typography sx={{ textDecoration: 'underline', fontStyle: 'italic' }}> Deadline </Typography> </Grid>
+                        <Grid item xs={8}> <Typography sx={classes.text}> {new Date(deadline).toLocaleString()} </Typography> </Grid>
+                    </Grid>
+                }
                 { sample && <Typography sx={classes.text}> Deadline : Tomorrow </Typography>}
             </CardContent>
         </Card>

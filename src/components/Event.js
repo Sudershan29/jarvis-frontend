@@ -1,12 +1,11 @@
 import React from "react";
 import { Box, Typography } from '@mui/material';
-import { makeStyles } from "@mui/styles";
 import EventGroup from "./EventGroup";
 
-const useStyles = makeStyles({
+const useStyles = {
     container: {
         flex: 1,
-        padding: 10,
+        padding: 1,
     },
     heading: {
         fontWeight: 'bold', 
@@ -15,12 +14,12 @@ const useStyles = makeStyles({
     center: {
         display: 'flex',
         justifyContent: 'center',
-        padding: 20
+        padding: 2
     }
-});
+};
 
 const Event = ({ events, heading, isDate, errorMessage }) => {
-    const classes = useStyles();
+    const classes = useStyles;
 
     const groupEvents = () => {
         const grouped = [];
@@ -57,7 +56,7 @@ const Event = ({ events, heading, isDate, errorMessage }) => {
             {!isDate && <Typography variant="body1" fontWeight="bold"> {heading}</Typography>}
             {isDate && <Typography variant="body1" fontWeight="bold"> {heading?.day}, {heading?.date + " " + heading?.month}</Typography>}
             {events.length === 0 ?
-                <Box className={classes.center}>
+                <Box sx={classes.center}>
                     <Typography>{errorMessage ?  errorMessage : 'No upcoming events for today' }</Typography> 
                 </Box> 
                 : renderEventGroups()}

@@ -64,7 +64,7 @@ export default function LoginScreen() {
         <Box className={classes.container}>
             <Typography variant="h4" fontWeight="bold" style={{ marginBottom: 20 }}>Login</Typography>
 
-            {/* <Box className={classes.inputView}>
+            <Box className={classes.inputView}>
                 <TextField
                     value={email}
                     className={classes.TextInput}
@@ -82,17 +82,17 @@ export default function LoginScreen() {
                     type="password"
                     onChange={(e) => setPassword(e.target.value)}
                 />
-            </Box> */}
+            </Box>
 
             <Grid container direction="column" justifyContent="center" spacing={2} alignItems="center" padding={2}>
-                {/* <Grid item>
+                <Grid item>
                     <Button
                         variant="contained"
                         onClick={() => handleLogin()}
                     >
                         Login
                     </Button>
-                </Grid> */}
+                </Grid>
 
                 <Grid item>
                     <GoogleButton variant="contained" onClick={NavigateToLogin} />
